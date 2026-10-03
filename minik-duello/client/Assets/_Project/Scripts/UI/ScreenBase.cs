@@ -7,12 +7,12 @@ namespace MinikDuello.UI
     public abstract class ScreenBase : MonoBehaviour
     {
         protected UIManager Ui { get; private set; }
-        protected GameConfig Config { get; private set; }
+        protected AppSettings Config { get; private set; }
         protected float TouchTarget { get; private set; }
 
         public ScreenId Id { get; private set; }
 
-        public void Initialize(ScreenId id, UIManager ui, GameConfig config)
+        public void Initialize(ScreenId id, UIManager ui, AppSettings config)
         {
             Id = id;
             Ui = ui;

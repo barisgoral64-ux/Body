@@ -2,5 +2,6 @@
   "name": "MinikDuello.Core",
   "rootNamespace": "MinikDuello.Core",
   "references": [],
+  "noEngineReferences": true,
   "autoReferenced": true
 }

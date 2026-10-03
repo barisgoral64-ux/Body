@@ -1,4 +1,5 @@
 using MinikDuello.Core;
+using MinikDuello.Infra;
 using MinikDuello.UI;
 using UnityEngine;
 
@@ -29,12 +30,13 @@ namespace MinikDuello.Game
             Application.targetFrameRate = TargetFrameRate;
 
             GameConfig config = LoadConfig();
-            Log.Configure(config.LogLevel);
-            ServiceLocator.Register(config);
+            AppSettings settings = config.ToSettings();
+            Log.Configure(settings.LogLevel, new UnityLogSink());
+            ServiceLocator.Register(settings);
 
             var ui = new GameObject("UIManager").AddComponent<UIManager>();
             ui.transform.SetParent(transform, false);
-            ui.Initialize(config);
+            ui.Initialize(settings);
             ServiceLocator.Register(ui);
 
             Log.Info("Boot", "Başlatıldı. Ortam: " + config.environment);

@@ -1,0 +1,8 @@
+{
+  "name": "MinikDuello.Infra",
+  "rootNamespace": "MinikDuello.Infra",
+  "references": ["MinikDuello.Core", "MinikDuello.Domain", "MinikDuello.Services"],
+  "overrideReferences": true,
+  "precompiledReferences": ["Newtonsoft.Json.dll"],
+  "autoReferenced": true
+}

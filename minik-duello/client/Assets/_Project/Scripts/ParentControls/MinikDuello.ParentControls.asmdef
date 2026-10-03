@@ -2,5 +2,6 @@
   "name": "MinikDuello.ParentControls",
   "rootNamespace": "MinikDuello.ParentControls",
   "references": ["MinikDuello.Core"],
+  "noEngineReferences": true,
   "autoReferenced": true
 }

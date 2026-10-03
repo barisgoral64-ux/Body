@@ -137,13 +137,13 @@ namespace MinikDuello.UI
             rect.offsetMax = Vector2.zero;
         }
 
-        public static float MinTouchTarget(GameConfig config)
+        public static float MinTouchTarget(AppSettings config)
         {
             float aspect = Screen.width > Screen.height
                 ? (float)Screen.width / Mathf.Max(1, Screen.height)
                 : (float)Screen.height / Mathf.Max(1, Screen.width);
             // Tablet oranları (4:3 gibi) telefon oranlarından daha kareye yakındır.
-            return aspect < UITheme.TabletAspectThreshold ? config.minTouchTargetTablet : config.minTouchTargetPhone;
+            return aspect < UITheme.TabletAspectThreshold ? config.MinTouchTargetTablet : config.MinTouchTargetPhone;
         }
     }
 }

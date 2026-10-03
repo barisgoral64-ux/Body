@@ -11,13 +11,13 @@ namespace MinikDuello.UI
         private readonly ScreenStack<ScreenId> stack = new ScreenStack<ScreenId>();
         private readonly Dictionary<ScreenId, ScreenBase> screens = new Dictionary<ScreenId, ScreenBase>();
 
-        private GameConfig config;
+        private AppSettings config;
         private RectTransform safeRoot;
         private ScreenId gateTarget = ScreenId.MainMenu;
 
         public ScreenId Current => stack.Current;
 
-        public void Initialize(GameConfig gameConfig)
+        public void Initialize(AppSettings gameConfig)
         {
             config = gameConfig != null ? gameConfig : throw new ArgumentNullException(nameof(gameConfig));
             UIFactory.EnsureEventSystem();

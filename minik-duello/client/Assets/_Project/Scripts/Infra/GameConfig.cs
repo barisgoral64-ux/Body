@@ -1,6 +1,7 @@
+using MinikDuello.Core;
 using UnityEngine;
 
-namespace MinikDuello.Core
+namespace MinikDuello.Infra
 {
     /// <summary>
     /// Tüm sayısal ayarlar burada. Kodda magic number kullanılmaz.
@@ -20,7 +21,6 @@ namespace MinikDuello.Core
         [Header("Bölümler")]
         public int totalLevels = 100;
         public int levelsPerWorld = 10;
-        [Range(0f, 1f)] public float maxDifficultyStep = 0.05f;
 
         [Header("Ağ")]
         public float httpTimeoutSeconds = 10f;
@@ -37,9 +37,30 @@ namespace MinikDuello.Core
         [Header("Ebeveyn")]
         public int parentPinLength = 4;
 
+        [Header("Tur")]
+        public int roundIntroLockMs = 1600;
+
         public bool IsProduction => environment == AppEnvironment.Production;
-        public string ApiUrl => IsProduction ? productionApiUrl : developmentApiUrl;
-        public string WsUrl => IsProduction ? productionWsUrl : developmentWsUrl;
-        public LogLevel LogLevel => IsProduction ? LogLevel.Info : LogLevel.Debug;
+
+        /// <summary>Unity'den bağımsız ayar nesnesi; servisler yalnızca bunu bilir.</summary>
+        public AppSettings ToSettings() => new AppSettings
+        {
+            Environment = environment,
+            ApiUrl = IsProduction ? productionApiUrl : developmentApiUrl,
+            WsUrl = IsProduction ? productionWsUrl : developmentWsUrl,
+            ProtocolVersion = protocolVersion,
+            TotalLevels = totalLevels,
+            LevelsPerWorld = levelsPerWorld,
+            HttpTimeoutSeconds = httpTimeoutSeconds,
+            HttpMaxRetries = httpMaxRetries,
+            ReconnectGraceSeconds = reconnectGraceSeconds,
+            ReconnectBackoffBaseSeconds = reconnectBackoffBaseSeconds,
+            ReconnectBackoffMaxSeconds = reconnectBackoffMaxSeconds,
+            HeartbeatIntervalSeconds = heartbeatIntervalSeconds,
+            MinTouchTargetPhone = minTouchTargetPhone,
+            MinTouchTargetTablet = minTouchTargetTablet,
+            ParentPinLength = parentPinLength,
+            RoundIntroLockMs = roundIntroLockMs
+        };
     }
 }

@@ -1,0 +1,9 @@
+{
+  "name": "MinikDuello.Domain",
+  "rootNamespace": "MinikDuello.Domain",
+  "references": ["MinikDuello.Core"],
+  "noEngineReferences": true,
+  "overrideReferences": true,
+  "precompiledReferences": ["Newtonsoft.Json.dll"],
+  "autoReferenced": true
+}

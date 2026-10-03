@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 namespace MinikDuello.Core
 {
@@ -11,12 +10,28 @@ namespace MinikDuello.Core
         Error = 40
     }
 
+    /// <summary>Log çıktı hedefi. Unity'de UnityLogSink, testte bellek içi sink kullanılır.</summary>
+    public interface ILogSink
+    {
+        void Write(LogLevel level, string line);
+    }
+
+    public sealed class ConsoleLogSink : ILogSink
+    {
+        public void Write(LogLevel level, string line) => Console.WriteLine("[" + level + "] " + line);
+    }
+
     /// <summary>Seviyeli log. Üretimde Debug kapalıdır; token/PIN asla loglanmaz.</summary>
     public static class Log
     {
         private static LogLevel minLevel = LogLevel.Debug;
+        private static ILogSink sink = new ConsoleLogSink();
 
-        public static void Configure(LogLevel level) => minLevel = level;
+        public static void Configure(LogLevel level, ILogSink newSink = null)
+        {
+            minLevel = level;
+            if (newSink != null) sink = newSink;
+        }
 
         public static void Debug(string scope, string message) => Write(LogLevel.Debug, scope, message);
         public static void Info(string scope, string message) => Write(LogLevel.Info, scope, message);
@@ -29,13 +44,7 @@ namespace MinikDuello.Core
         private static void Write(LogLevel level, string scope, string message)
         {
             if (level < minLevel) return;
-            string line = "[" + scope + "] " + message;
-            switch (level)
-            {
-                case LogLevel.Error: UnityEngine.Debug.LogError(line); break;
-                case LogLevel.Warn: UnityEngine.Debug.LogWarning(line); break;
-                default: UnityEngine.Debug.Log(line); break;
-            }
+            sink.Write(level, "[" + scope + "] " + message);
         }
     }
 }

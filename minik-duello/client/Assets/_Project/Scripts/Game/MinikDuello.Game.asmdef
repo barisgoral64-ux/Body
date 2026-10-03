@@ -1,6 +1,8 @@
 {
   "name": "MinikDuello.Game",
   "rootNamespace": "MinikDuello.Game",
-  "references": ["MinikDuello.Core", "MinikDuello.UI", "MinikDuello.ParentControls"],
+  "references": ["MinikDuello.Core", "MinikDuello.Domain", "MinikDuello.Services", "MinikDuello.ParentControls", "MinikDuello.Infra", "MinikDuello.UI"],
+  "overrideReferences": true,
+  "precompiledReferences": ["Newtonsoft.Json.dll"],
   "autoReferenced": true
 }
