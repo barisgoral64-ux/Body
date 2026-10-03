@@ -41,6 +41,59 @@ namespace MinikDuello.Editor
             return config;
         }
 
+        /// <summary>
+        /// TEST APK'sı (Play Store için DEĞİL): Unity'nin hata ayıklama anahtarıyla imzalanır, anahtar/ortam değişkeni gerekmez.
+        /// Sunucu adresi MINIK_API_URL / MINIK_WS_URL ile verilebilir (http/ws serbest); verilmezse GameConfig'teki
+        /// geliştirme adresleri kullanılır. Sunucu yoksa tek oyunculu bölümler yine çevrimdışı oynanır.
+        /// Menü: Minik Düello > Test APK derle.
+        /// </summary>
+        [MenuItem("Minik Düello/Test APK derle")]
+        public static void BuildAndroidTestApk()
+        {
+            try
+            {
+                GameConfig config = EnsureConfig();
+                string api = Environment.GetEnvironmentVariable("MINIK_API_URL");
+                string ws = Environment.GetEnvironmentVariable("MINIK_WS_URL");
+                config.environment = MinikDuello.Core.AppEnvironment.Development;
+                if (!string.IsNullOrEmpty(api)) config.developmentApiUrl = api;
+                if (!string.IsNullOrEmpty(ws)) config.developmentWsUrl = ws;
+                EditorUtility.SetDirty(config);
+                AssetDatabase.SaveAssets();
+
+                NamedBuildTarget android = NamedBuildTarget.Android;
+                PlayerSettings.productName = "Minik Düello (Test)";
+                PlayerSettings.SetApplicationIdentifier(android, Environment.GetEnvironmentVariable("MINIK_PACKAGE") ?? "com.example.minikduello.test");
+                PlayerSettings.bundleVersion = "0.0.1-test";
+                PlayerSettings.SetScriptingBackend(android, ScriptingImplementation.IL2CPP);
+                PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
+                PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel24;
+                PlayerSettings.defaultInterfaceOrientation = UIOrientation.Portrait;
+                PlayerSettings.Android.forceInternetPermission = true;
+                PlayerSettings.Android.useCustomKeystore = false; // hata ayıklama anahtarı
+                EnsureScene();
+
+                Directory.CreateDirectory("build/Android");
+                EditorUserBuildSettings.buildAppBundle = false; // APK
+                EditorUserBuildSettings.development = true;
+                BuildReport report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
+                {
+                    scenes = new[] { ScenePath },
+                    target = BuildTarget.Android,
+                    locationPathName = "build/Android/MinikDuello-test.apk",
+                    options = BuildOptions.Development
+                });
+                if (report.summary.result != BuildResult.Succeeded)
+                    throw new InvalidOperationException("Derleme sonucu: " + report.summary.result);
+                Debug.Log("Test APK hazır: build/Android/MinikDuello-test.apk");
+            }
+            catch (Exception exception)
+            {
+                Debug.LogError("Test APK derlenemedi: " + exception.Message);
+                if (Application.isBatchMode) EditorApplication.Exit(1);
+            }
+        }
+
         public static void BuildAndroidRelease()
         {
             try
