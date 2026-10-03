@@ -7,6 +7,8 @@ export interface StoredParentSettings extends ParentSettings {
   readonly pinHash: string | null;
   readonly pinFailedAttempts: number;
   readonly pinLockedUntil: Date | null;
+  /** Başarılı doğrulamaya kadar ardışık kilitlenme sayısı (süre büyütmek için). */
+  readonly pinLockoutCount: number;
 }
 
 export interface LevelProgress {
@@ -44,6 +46,8 @@ export interface DataStore {
   /** Kod başkasında ise false. */
   setFriendCode(id: PlayerId, code: string): Promise<boolean>;
   touchPlayer(id: PlayerId, at: Date): Promise<void>;
+  /** Oyuncuyu ve ona bağlı tüm kişisel/ilişkisel veriyi siler (çocuk verisi silme hakkı). */
+  deletePlayer(id: PlayerId): Promise<void>;
   getProfile(id: PlayerId): Promise<PlayerProfile | null>;
   updateProfile(id: PlayerId, patch: ProfilePatch): Promise<void>;
 

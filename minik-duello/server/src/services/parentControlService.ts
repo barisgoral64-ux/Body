@@ -32,6 +32,8 @@ export class ParentControlService {
     private readonly clock: Clock,
     /** Engelleme/kaldırma sonrası canlı oda ve davetleri kapatmak için. */
     private readonly onRelationshipRemoved: (a: PlayerId, b: PlayerId) => void = () => undefined,
+    /** Hesap silinmeden önce canlı oda ve bağlantıyı kapatmak için. */
+    private readonly onAccountDeleting: (playerId: PlayerId) => void = () => undefined,
   ) {}
 
   async getSettings(playerId: PlayerId): Promise<Result<PublicParentSettings>> {
@@ -49,7 +51,7 @@ export class ParentControlService {
       if (!check.ok) return check;
     }
     const fresh = (await this.store.getSettings(playerId)) ?? s;
-    await this.store.saveSettings({ ...fresh, pinHash: hashPin(newPin), pinFailedAttempts: 0, pinLockedUntil: null });
+    await this.store.saveSettings({ ...fresh, pinHash: hashPin(newPin), pinFailedAttempts: 0, pinLockedUntil: null, pinLockoutCount: 0 });
     return ok(undefined);
   }
 
@@ -62,18 +64,21 @@ export class ParentControlService {
     if (s.pinLockedUntil && s.pinLockedUntil > now) return fail(ErrorCode.RateLimited, "PIN geçici olarak kilitli");
 
     if (PIN_PATTERN.test(pin) && pinMatches(pin, s.pinHash)) {
-      if (s.pinFailedAttempts > 0 || s.pinLockedUntil) {
-        await this.store.saveSettings({ ...s, pinFailedAttempts: 0, pinLockedUntil: null });
+      if (s.pinFailedAttempts > 0 || s.pinLockedUntil || s.pinLockoutCount > 0) {
+        await this.store.saveSettings({ ...s, pinFailedAttempts: 0, pinLockedUntil: null, pinLockoutCount: 0 });
       }
       return ok(undefined);
     }
 
     const attempts = s.pinFailedAttempts + 1;
     const locked = attempts >= PARENT.maxPinAttempts;
+    // Her ardışık kilitlenmede süre büyür (5 dk, 15 dk, 45 dk … en çok 24 saat).
+    const duration = Math.min(PARENT.pinLockoutMaxMs, PARENT.pinLockoutMs * PARENT.pinLockoutGrowth ** s.pinLockoutCount);
     await this.store.saveSettings({
       ...s,
       pinFailedAttempts: locked ? 0 : attempts,
-      pinLockedUntil: locked ? new Date(now.getTime() + PARENT.pinLockoutMs) : s.pinLockedUntil,
+      pinLockedUntil: locked ? new Date(now.getTime() + duration) : s.pinLockedUntil,
+      pinLockoutCount: locked ? s.pinLockoutCount + 1 : s.pinLockoutCount,
     });
     return fail(locked ? ErrorCode.RateLimited : ErrorCode.Forbidden, "PIN yanlış");
   }
@@ -135,6 +140,18 @@ export class ParentControlService {
     if (!check.ok) return check;
     await this.store.removeFriendPair(playerId, friendId);
     this.onRelationshipRemoved(playerId, friendId);
+    return ok(undefined);
+  }
+
+  /**
+   * Hesabı ve tüm verisini kalıcı olarak siler (ebeveyn PIN'i ile). Geri alınamaz.
+   * Çocuk verisi silme hakkı: COPPA / GDPR / KVKK taleplerinin teknik karşılığı.
+   */
+  async deleteAccount(playerId: PlayerId, pin: string): Promise<Result<void>> {
+    const check = await this.verifyPin(playerId, pin);
+    if (!check.ok) return check;
+    this.onAccountDeleting(playerId);
+    await this.store.deletePlayer(playerId);
     return ok(undefined);
   }
 

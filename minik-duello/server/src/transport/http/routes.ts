@@ -184,6 +184,11 @@ export function registerRoutes(app: FastifyInstance, c: Container): void {
     if (!body) return reply;
     return respond(reply, await c.parent.removeFriend(req.playerId, body.friendId, body.pin), () => ({ ok: true }));
   });
+  app.post("/v1/parent/delete-account", secured, async (req, reply) => {
+    const body = parse(z.object({ pin: pinSchema, confirm: z.literal(true) }).strict(), req.body, reply);
+    if (!body) return reply;
+    return respond(reply, await c.parent.deleteAccount(req.playerId, body.pin), () => ({ ok: true }));
+  });
   app.post("/v1/parent/regenerate-code", secured, async (req, reply) => {
     const body = parse(z.object({ pin: pinSchema }).strict(), req.body, reply);
     if (!body) return reply;

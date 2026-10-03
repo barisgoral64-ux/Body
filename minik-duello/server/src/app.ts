@@ -11,7 +11,7 @@ export interface BuiltApp {
 
 /** Fastify uygulaması + WebSocket geçidi; testte main.ts olmadan oluşturulabilir. */
 export function buildApp(c: Container): BuiltApp {
-  const app = Fastify({ logger: false, bodyLimit: LIMITS.wsMaxMessageBytes * 8 });
+  const app = Fastify({ logger: false, bodyLimit: LIMITS.wsMaxMessageBytes * 8, trustProxy: c.config.trustProxy });
 
   app.addHook("onResponse", (request, reply, done) => {
     c.logger.debug("http", { method: request.method, url: request.url, status: reply.statusCode });
@@ -23,6 +23,11 @@ export function buildApp(c: Container): BuiltApp {
     // İç ayrıntı istemciye sızdırılmaz.
     const status = (error as { statusCode?: number }).statusCode;
     void reply.status(status && status >= 400 && status < 500 ? status : 500).send({ code: status && status < 500 ? "INVALID_INPUT" : "INTERNAL" });
+  });
+
+  app.addHook("onSend", (_request, reply, _payload, done) => {
+    void reply.header("x-content-type-options", "nosniff").header("cache-control", "no-store");
+    done();
   });
 
   app.get("/health", () => ({

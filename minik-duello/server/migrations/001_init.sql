@@ -29,7 +29,8 @@ CREATE TABLE parent_settings (
   sound_enabled           BOOLEAN NOT NULL DEFAULT TRUE,
   pin_hash                TEXT,
   pin_failed_attempts     INT NOT NULL DEFAULT 0,
-  pin_locked_until        TIMESTAMPTZ
+  pin_locked_until        TIMESTAMPTZ,
+  pin_lockout_count       INT NOT NULL DEFAULT 0
 );
 
 -- Tek satır = iki yönlü arkadaşlık. player_a < player_b zorunlu.
@@ -83,8 +84,9 @@ CREATE INDEX game_invites_receiver_idx ON game_invites(receiver_id, status);
 
 CREATE TABLE game_rooms (
   room_id       UUID PRIMARY KEY,
-  player1_id    UUID NOT NULL REFERENCES players(player_id),
-  player2_id    UUID NOT NULL REFERENCES players(player_id),
+  -- Oyuncu hesabını silerse oda kaydı anonimleşir (diğer oyuncunun geçmişi korunur).
+  player1_id    UUID REFERENCES players(player_id) ON DELETE SET NULL,
+  player2_id    UUID REFERENCES players(player_id) ON DELETE SET NULL,
   game_mode     TEXT NOT NULL,
   state         TEXT NOT NULL CHECK (state IN ('waiting','ready','playing','reconnecting','finished')),
   current_round INT NOT NULL DEFAULT 0,
@@ -102,7 +104,7 @@ CREATE TABLE matches (
 
 CREATE TABLE match_results (
   match_id      UUID NOT NULL REFERENCES matches(match_id) ON DELETE CASCADE,
-  player_id     UUID NOT NULL REFERENCES players(player_id),
+  player_id     UUID NOT NULL REFERENCES players(player_id) ON DELETE CASCADE,
   score         INT NOT NULL CHECK (score >= 0),
   is_winner     BOOLEAN NOT NULL,
   stars_awarded INT NOT NULL CHECK (stars_awarded >= 0),

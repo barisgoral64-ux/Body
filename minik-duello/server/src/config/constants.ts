@@ -56,6 +56,9 @@ export const PARENT = {
   pinLength: 4,
   maxPinAttempts: 5,
   pinLockoutMs: 5 * 60 * 1000,
+  /** Her ardışık kilitlenmede süre bu çarpanla büyür (üst sınırlı): kaba kuvvet denemesi pahalılaşır. */
+  pinLockoutGrowth: 3,
+  pinLockoutMaxMs: 24 * 60 * 60 * 1000,
   defaultDailyLimitMinutes: 0, // 0 = sınırsız
 } as const;
 
@@ -70,6 +73,7 @@ export const LEVELS = {
 export const LIMITS = {
   wsMaxMessageBytes: 2_048,
   wsMessagesPerSecond: 20,
+  wsConnectionsPerIp: 8,
   httpRequestsPerMinute: 120,
   quickChatCooldownMs: 1_000,
 } as const;

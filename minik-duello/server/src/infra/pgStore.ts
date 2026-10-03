@@ -41,6 +41,7 @@ const toSettings = (r: Row): StoredParentSettings => ({
   pinHash: (r.pin_hash as string | null) ?? null,
   pinFailedAttempts: r.pin_failed_attempts as number,
   pinLockedUntil: (r.pin_locked_until as Date | null) ?? null,
+  pinLockoutCount: (r.pin_lockout_count as number | undefined) ?? 0,
 });
 
 const toRequest = (r: Row): FriendRequest => ({
@@ -115,10 +116,10 @@ export class PgStore implements DataStore {
       );
       await c.query(
         `INSERT INTO parent_settings(player_id, friends_enabled, multiplayer_enabled, online_status_visible,
-           game_invitations_enabled, daily_limit_minutes, sound_enabled, pin_hash, pin_failed_attempts, pin_locked_until)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+           game_invitations_enabled, daily_limit_minutes, sound_enabled, pin_hash, pin_failed_attempts, pin_locked_until, pin_lockout_count)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`,
         [s.playerId, s.friendsEnabled, s.multiplayerEnabled, s.onlineStatusVisible, s.gameInvitationsEnabled,
-          s.dailyLimitMinutes, s.soundEnabled, s.pinHash, s.pinFailedAttempts, s.pinLockedUntil],
+          s.dailyLimitMinutes, s.soundEnabled, s.pinHash, s.pinFailedAttempts, s.pinLockedUntil, s.pinLockoutCount],
       );
     });
   }
@@ -147,6 +148,10 @@ export class PgStore implements DataStore {
   async touchPlayer(id: PlayerId, at: Date): Promise<void> {
     await this.pool.query("UPDATE players SET last_seen_at=$2 WHERE player_id=$1", [id, at]);
   }
+  async deletePlayer(id: PlayerId): Promise<void> {
+    // Tüm bağlı tablolar ON DELETE CASCADE / SET NULL ile temizlenir (bkz. migrations).
+    await this.pool.query("DELETE FROM players WHERE player_id=$1", [id]);
+  }
   async getProfile(id: PlayerId): Promise<PlayerProfile | null> {
     const r = await this.one("SELECT * FROM player_profiles WHERE player_id=$1", [id]);
     return r ? toProfile(r) : null;
@@ -170,9 +175,9 @@ export class PgStore implements DataStore {
     await this.pool.query(
       `UPDATE parent_settings SET friends_enabled=$2, multiplayer_enabled=$3, online_status_visible=$4,
          game_invitations_enabled=$5, daily_limit_minutes=$6, sound_enabled=$7, pin_hash=$8,
-         pin_failed_attempts=$9, pin_locked_until=$10 WHERE player_id=$1`,
+         pin_failed_attempts=$9, pin_locked_until=$10, pin_lockout_count=$11 WHERE player_id=$1`,
       [s.playerId, s.friendsEnabled, s.multiplayerEnabled, s.onlineStatusVisible, s.gameInvitationsEnabled,
-        s.dailyLimitMinutes, s.soundEnabled, s.pinHash, s.pinFailedAttempts, s.pinLockedUntil],
+        s.dailyLimitMinutes, s.soundEnabled, s.pinHash, s.pinFailedAttempts, s.pinLockedUntil, s.pinLockoutCount],
     );
   }
 

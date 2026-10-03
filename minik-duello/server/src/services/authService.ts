@@ -61,6 +61,7 @@ export class AuthService {
       pinHash: null,
       pinFailedAttempts: 0,
       pinLockedUntil: null,
+      pinLockoutCount: 0,
     });
     for (const rewardId of STARTER_REWARDS) await this.store.grantInventory(player.playerId, rewardId, now);
     return ok({ player, tokens: this.issue(player.playerId), isNew: true });

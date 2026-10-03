@@ -68,6 +68,43 @@ export class MemoryStore implements DataStore {
     if (p) this.players.set(id, { ...p, lastSeenAt: at });
     return Promise.resolve();
   }
+  deletePlayer(id: PlayerId): Promise<void> {
+    const player = this.players.get(id);
+    if (player) this.byCode.delete(player.friendCode);
+    for (const [hash, pid] of this.byDevice) if (pid === id) this.byDevice.delete(hash);
+    for (const key of [...this.friends.keys()]) if (key.split("|").includes(id)) this.friends.delete(key);
+    for (const [rid, row] of [...this.requests]) {
+      if (row.request.senderPlayerId === id || row.request.receiverPlayerId === id) this.requests.delete(rid);
+    }
+    for (const key of [...this.blocks]) if (key.split(">").includes(id)) this.blocks.delete(key);
+    for (const [iid, invite] of [...this.invites]) if (invite.senderId === id || invite.receiverId === id) this.invites.delete(iid);
+    for (const [key, p] of [...this.progress]) if (p.playerId === id) this.progress.delete(key);
+    for (let i = this.codeAttempts.length - 1; i >= 0; i -= 1) if (this.codeAttempts[i]?.sender === id) this.codeAttempts.splice(i, 1);
+    for (let i = this.starEvents.length - 1; i >= 0; i -= 1) if (this.starEvents[i]?.id === id) this.starEvents.splice(i, 1);
+    for (let i = this.coinLedger.length - 1; i >= 0; i -= 1) if (this.coinLedger[i]?.id === id) this.coinLedger.splice(i, 1);
+    for (const m of this.matches) {
+      (m as { results: readonly MatchResult[] }).results = m.results.filter((r) => r.playerId !== id);
+    }
+    this.players.delete(id);
+    this.profiles.delete(id);
+    this.settings.delete(id);
+    this.inventory.delete(id);
+    this.daily.delete(id);
+    this.saves.delete(id);
+    return Promise.resolve();
+  }
+  /** Test yardımcısı: oyuncuya ait herhangi bir kalıntı var mı? */
+  hasAnyDataFor(id: PlayerId): boolean {
+    const inMaps = [this.players, this.profiles, this.settings, this.inventory, this.daily, this.saves].some((m) => m.has(id));
+    const inFriends = [...this.friends.keys()].some((k) => k.split("|").includes(id));
+    const inRequests = [...this.requests.values()].some((r) => r.request.senderPlayerId === id || r.request.receiverPlayerId === id);
+    const inBlocks = [...this.blocks].some((k) => k.split(">").includes(id));
+    const inInvites = [...this.invites.values()].some((i) => i.senderId === id || i.receiverId === id);
+    const inProgress = [...this.progress.values()].some((p) => p.playerId === id);
+    const inMatches = this.matches.some((m) => m.results.some((r) => r.playerId === id));
+    return inMaps || inFriends || inRequests || inBlocks || inInvites || inProgress || inMatches;
+  }
+
   getProfile(id: PlayerId): Promise<PlayerProfile | null> {
     return Promise.resolve(this.profiles.get(id) ?? null);
   }

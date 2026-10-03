@@ -29,6 +29,8 @@ export interface ContainerOptions {
 
 export interface PushSink {
   deliver(to: string, message: ServerMessage): void;
+  /** Hesap silindi / oturum kapatıldı: bağlantıyı düşür. */
+  disconnect(playerId: string): void;
   onRoomClosed(players: readonly string[]): void;
 }
 
@@ -66,7 +68,7 @@ export function createContainer(config: AppConfig, logger: Logger, options: Cont
   const deliver = (to: string, message: ServerMessage): void => sink?.deliver(to, message);
 
   const tokens = new TokenService(config.jwtSecret, clock);
-  const auth = new AuthService(store, tokens, clock, newId, config.jwtSecret);
+  const auth = new AuthService(store, tokens, clock, newId, config.deviceSecret);
   const players = new PlayerService(store);
   const presence = new PresenceService(store, clock);
   const rewards = new RewardService(store, clock);
@@ -78,7 +80,15 @@ export function createContainer(config: AppConfig, logger: Logger, options: Cont
   const rooms = new RoomService(store, rewards, clock, scheduler, random, newId, logger, (p) => sink?.onRoomClosed(p));
   rooms.setEmitter(deliver);
 
-  const parent = new ParentControlService(store, clock, (a, b) => rooms.endRoomBetween(a, b));
+  const parent = new ParentControlService(
+    store,
+    clock,
+    (a, b) => rooms.endRoomBetween(a, b),
+    (playerId) => {
+      rooms.roomOf(playerId)?.leave(playerId);
+      sink?.disconnect(playerId);
+    },
+  );
   const friendRequests = new FriendRequestService(store, players, clock, newId, (event) =>
     deliver(event.to, { v: 1, type: "friend.event", payload: { type: event.type, from: event.from } }),
   );

@@ -10,7 +10,7 @@ describe("config", () => {
     expect(() => loadConfig({ NODE_ENV: "production", JWT_SECRET: "kisa" })).toThrow();
   });
   it("üretimde güçlü secret ile açılır ve log seviyesi info olur", () => {
-    const c = loadConfig({ NODE_ENV: "production", JWT_SECRET: "x".repeat(40), DATABASE_URL: "postgres://x/y" });
+    const c = loadConfig({ NODE_ENV: "production", JWT_SECRET: "x".repeat(40), DEVICE_SECRET: "y".repeat(40), DATABASE_URL: "postgres://x/y" });
     expect(c.isProduction).toBe(true);
     expect(c.logLevel).toBe("info");
   });
@@ -20,7 +20,13 @@ describe("config", () => {
     expect(c.logLevel).toBe("debug");
   });
   it("üretimde DATABASE_URL zorunlu", () => {
-    expect(() => loadConfig({ NODE_ENV: "production", JWT_SECRET: "x".repeat(40) })).toThrow(/DATABASE_URL/);
+    expect(() => loadConfig({ NODE_ENV: "production", JWT_SECRET: "x".repeat(40), DEVICE_SECRET: "y".repeat(40) })).toThrow(/DATABASE_URL/);
+  });
+  it("üretimde DEVICE_SECRET zorunlu ve JWT_SECRET'ten farklı olmalı", () => {
+    const base = { NODE_ENV: "production", JWT_SECRET: "x".repeat(40), DATABASE_URL: "postgres://x/y" };
+    expect(() => loadConfig(base)).toThrow(/DEVICE_SECRET/);
+    expect(() => loadConfig({ ...base, DEVICE_SECRET: "x".repeat(40) })).toThrow(/farklı/);
+    expect(loadConfig({ ...base, DEVICE_SECRET: "y".repeat(40), TRUST_PROXY: "true" }).trustProxy).toBe(true);
   });
   it("geçersiz PORT reddedilir", () => {
     expect(() => loadConfig({ PORT: "abc" })).toThrow();

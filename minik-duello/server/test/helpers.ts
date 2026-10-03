@@ -76,7 +76,7 @@ export async function createEnv(seed = 1): Promise<TestEnv> {
   const logger = createLogger("error", "test", () => undefined);
   const c = createContainer(loadConfig({}), logger, { store, clock: time, scheduler: time, random: seededRandom(seed) });
   const sent: { to: string; message: ServerMessage }[] = [];
-  c.bindSink({ deliver: (to, message) => void sent.push({ to, message }), onRoomClosed: () => undefined });
+  c.bindSink({ deliver: (to, message) => void sent.push({ to, message }), onRoomClosed: () => undefined, disconnect: () => undefined });
   return { time, store, matchCount, c, sent };
 }
 

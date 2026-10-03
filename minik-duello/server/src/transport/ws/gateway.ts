@@ -1,4 +1,4 @@
-import type { Server as HttpServer } from "node:http";
+import type { IncomingMessage, Server as HttpServer } from "node:http";
 import { WebSocketServer, type WebSocket } from "ws";
 import { AUTH, LIMITS } from "../../config/constants.js";
 import type { Container, PushSink } from "../../container.js";
@@ -15,9 +15,11 @@ const CLOSE_AUTH_TIMEOUT = 4401;
 const CLOSE_REPLACED = 4000;
 const CLOSE_PROTOCOL = 4400;
 const CLOSE_FLOOD = 4429;
+const CLOSE_ACCOUNT_DELETED = 4001;
 
 interface Connection {
   readonly socket: WebSocket;
+  readonly ip: string;
   playerId: PlayerId | null;
   readonly authTimer: ReturnType<typeof setTimeout>;
   windowStart: number;
@@ -32,6 +34,7 @@ export class Gateway implements PushSink {
   private readonly wss: WebSocketServer;
   private readonly connections = new Map<WebSocket, Connection>();
   private readonly byPlayer = new Map<PlayerId, Connection>();
+  private readonly ipCounts = new Map<string, number>();
   private readonly log;
 
   constructor(private readonly c: Container) {
@@ -46,7 +49,14 @@ export class Gateway implements PushSink {
         socket.destroy();
         return;
       }
-      this.wss.handleUpgrade(request, socket, head, (ws) => this.onConnection(ws));
+      // Aynı IP'den çok sayıda eşzamanlı bağlantı (kaynak tüketme) reddedilir.
+      const ip = clientIp(request, this.c.config.trustProxy);
+      if ((this.ipCounts.get(ip) ?? 0) >= LIMITS.wsConnectionsPerIp) {
+        socket.write("HTTP/1.1 429 Too Many Requests\r\nConnection: close\r\n\r\n");
+        socket.destroy();
+        return;
+      }
+      this.wss.handleUpgrade(request, socket, head, (ws) => this.onConnection(ws, ip));
     });
   }
 
@@ -73,14 +83,24 @@ export class Gateway implements PushSink {
     }
   }
 
+  disconnect(playerId: PlayerId): void {
+    const conn = this.byPlayer.get(playerId);
+    if (!conn) return;
+    this.byPlayer.delete(playerId);
+    this.c.presence.clear(playerId);
+    conn.socket.close(CLOSE_ACCOUNT_DELETED, "account deleted");
+  }
+
   isOnline(playerId: PlayerId): boolean {
     return this.byPlayer.has(playerId);
   }
 
   // --- Bağlantı yaşam döngüsü ---
-  private onConnection(socket: WebSocket): void {
+  private onConnection(socket: WebSocket, ip: string): void {
+    this.ipCounts.set(ip, (this.ipCounts.get(ip) ?? 0) + 1);
     const conn: Connection = {
       socket,
+      ip,
       playerId: null,
       windowStart: this.c.clock.now().getTime(),
       windowCount: 0,
@@ -100,6 +120,9 @@ export class Gateway implements PushSink {
 
   private onClose(conn: Connection): void {
     clearTimeout(conn.authTimer);
+    const remaining = (this.ipCounts.get(conn.ip) ?? 1) - 1;
+    if (remaining <= 0) this.ipCounts.delete(conn.ip);
+    else this.ipCounts.set(conn.ip, remaining);
     this.connections.delete(conn.socket);
     const playerId = conn.playerId;
     // Yeni bağlantı eskisinin yerini aldıysa oda/durum etkilenmez.
@@ -254,4 +277,14 @@ export class Gateway implements PushSink {
 function noRoom(): Result<never> {
   const error: AppError = { code: ErrorCode.InvalidState, message: "Odada değilsin" };
   return { ok: false, error };
+}
+
+/** İstemci IP'si. Yalnızca güvenilen yük dengeleyici arkasında X-Forwarded-For'un İLK değeri kullanılır. */
+export function clientIp(request: IncomingMessage, trustProxy: boolean): string {
+  if (trustProxy) {
+    const header = request.headers["x-forwarded-for"];
+    const first = (Array.isArray(header) ? header[0] : header)?.split(",")[0]?.trim();
+    if (first) return first;
+  }
+  return request.socket.remoteAddress ?? "unknown";
 }
