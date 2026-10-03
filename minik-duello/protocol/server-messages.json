@@ -1,0 +1,173 @@
+{
+  "room.opponentDisconnected": {
+    "graceMs": 15000
+  },
+  "room.opponentReconnected": {
+    "playerId": "bd7857bb-fd36-4d1c-95bf-8f3dae82050e"
+  },
+  "room.state": {
+    "roomId": "5effc266-6479-4798-a937-69160f43ec59",
+    "mode": "mixedMatch",
+    "state": "waiting",
+    "players": [
+      "7d2ec173-7636-4faf-8024-a9f0465d5d3b",
+      "bd7857bb-fd36-4d1c-95bf-8f3dae82050e"
+    ],
+    "currentRound": -1,
+    "totalRounds": 5,
+    "scores": {
+      "7d2ec173-7636-4faf-8024-a9f0465d5d3b": 0,
+      "bd7857bb-fd36-4d1c-95bf-8f3dae82050e": 0
+    },
+    "opponentConnected": false,
+    "resumeToken": "39a7b9a453c9a73d4edca671063c08e03d3ec9dd5609b3ac"
+  },
+  "room.countdown": {
+    "seconds": 3
+  },
+  "room.ready": {
+    "playerId": "7d2ec173-7636-4faf-8024-a9f0465d5d3b"
+  },
+  "room.round": {
+    "roundId": "e950673b-01ba-4418-87d4-86c57f98868f",
+    "kind": "color",
+    "multi": false,
+    "showMs": 0,
+    "durationMs": 15000,
+    "promptKey": "findColor",
+    "params": {
+      "target": "green"
+    },
+    "choices": [
+      {
+        "id": "orange",
+        "glyph": "orange"
+      },
+      {
+        "id": "red",
+        "glyph": "red"
+      },
+      {
+        "id": "green",
+        "glyph": "green"
+      },
+      {
+        "id": "purple",
+        "glyph": "purple"
+      }
+    ],
+    "roundIndex": 0,
+    "totalRounds": 5
+  },
+  "room.answerAck": {
+    "roundId": "e950673b-01ba-4418-87d4-86c57f98868f",
+    "correct": true,
+    "taken": false,
+    "points": 149,
+    "total": 149
+  },
+  "room.roundResult": {
+    "roundId": "e950673b-01ba-4418-87d4-86c57f98868f",
+    "correctChoiceIds": [
+      "green"
+    ],
+    "claimedBy": {},
+    "roundPoints": {
+      "7d2ec173-7636-4faf-8024-a9f0465d5d3b": 149,
+      "bd7857bb-fd36-4d1c-95bf-8f3dae82050e": 0
+    },
+    "scores": {
+      "7d2ec173-7636-4faf-8024-a9f0465d5d3b": 149,
+      "bd7857bb-fd36-4d1c-95bf-8f3dae82050e": 0
+    },
+    "team": null
+  },
+  "room.finished": {
+    "matchId": "1fef244e-1e2e-45a7-b463-4d41ba946eb6",
+    "reason": "completed",
+    "outcomes": [
+      {
+        "playerId": "7d2ec173-7636-4faf-8024-a9f0465d5d3b",
+        "score": 825,
+        "isWinner": true,
+        "starsAwarded": 3,
+        "coinsAwarded": 30
+      },
+      {
+        "playerId": "bd7857bb-fd36-4d1c-95bf-8f3dae82050e",
+        "score": 0,
+        "isWinner": false,
+        "starsAwarded": 2,
+        "coinsAwarded": 20
+      }
+    ],
+    "coop": null,
+    "newRewards": []
+  },
+  "room.quickChat": {
+    "from": "7d2ec173-7636-4faf-8024-a9f0465d5d3b",
+    "message": "hello"
+  },
+  "room.round.stars": {
+    "roundId": "a3c2bc01-e393-4c6c-be09-be9b2918c616",
+    "kind": "stars",
+    "multi": true,
+    "showMs": 0,
+    "durationMs": 20000,
+    "promptKey": "findStars",
+    "params": {
+      "target": 5
+    },
+    "choices": [
+      {
+        "id": "o1",
+        "glyph": "star"
+      },
+      {
+        "id": "o2",
+        "glyph": "heart"
+      },
+      {
+        "id": "o3",
+        "glyph": "star"
+      },
+      {
+        "id": "o4",
+        "glyph": "circle"
+      },
+      {
+        "id": "o5",
+        "glyph": "star"
+      },
+      {
+        "id": "o6",
+        "glyph": "star"
+      },
+      {
+        "id": "o7",
+        "glyph": "heart"
+      },
+      {
+        "id": "o8",
+        "glyph": "star"
+      },
+      {
+        "id": "o9",
+        "glyph": "triangle"
+      }
+    ],
+    "roundIndex": 0,
+    "totalRounds": 3
+  },
+  "invite.received": {
+    "inviteId": "d2e81411-251d-4265-b192-92983d3ba76a",
+    "from": {
+      "playerId": "bf2ae6b6-329f-4f5a-8a07-8a7d9fed4302",
+      "username": "MinikPenguen78",
+      "avatarCharacter": "panda",
+      "avatarFrame": null
+    },
+    "mode": "colorRace",
+    "expiresAt": "2026-01-01T00:00:30.000Z"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "auth": {
+    "v": 1,
+    "type": "auth",
+    "payload": {
+      "token": "TOKEN"
+    }
+  },
+  "heartbeat": {
+    "v": 1,
+    "type": "presence.heartbeat"
+  },
+  "inviteSend": {
+    "v": 1,
+    "type": "invite.send",
+    "payload": {
+      "receiverId": "f1",
+      "mode": "mixedMatch"
+    }
+  },
+  "inviteRespond": {
+    "v": 1,
+    "type": "invite.respond",
+    "payload": {
+      "inviteId": "i1",
+      "accept": true
+    }
+  },
+  "ready": {
+    "v": 1,
+    "type": "room.ready"
+  },
+  "answer": {
+    "v": 1,
+    "type": "room.answer",
+    "payload": {
+      "roundId": "r",
+      "choiceId": "c"
+    }
+  },
+  "quickChat": {
+    "v": 1,
+    "type": "room.quickChat",
+    "payload": {
+      "message": "hello"
+    }
+  },
+  "leave": {
+    "v": 1,
+    "type": "room.leave"
+  },
+  "resume": {
+    "v": 1,
+    "type": "room.resume",
+    "payload": {
+      "roomId": "room",
+      "resumeToken": "tok"
+    }
+  }
+}
