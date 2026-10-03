@@ -10,6 +10,7 @@ namespace MinikDuello.Services
         public string Body;
         public string BearerToken;
         public float TimeoutSeconds;
+        public string AppVersion;
     }
 
     public sealed class HttpResponse

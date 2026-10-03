@@ -19,8 +19,8 @@ cd server && UPDATE_FIXTURES=1 npx vitest run test/fixtures.test.ts
 ```
 
 ## Mevcut sonuçlar (bu oturumda)
-- Sunucu: **111 test** (bellek içi depoda 109 + yalnız PostgreSQL için 2) hem bellek içi depoda hem **gerçek PostgreSQL 16**'da geçti (e2e WebSocket oyunu, yarış koşulları, hesap silme, FK zinciri dahil). Üretim derlemesi gerçek PostgreSQL ile ayağa kalkıp `/health` ve kayıt yanıtı verdi.
-- İstemci mantığı: **116 test** geçti (100 bölümün tamamı için 20 tohumla tur üretimi, labirent bağlantısı, eşleştirme/sıralama mantığı, API yeniden deneme/token yenileme, offline kuyruk, gerçek zamanlı yeniden bağlanma ve maça devam, protokol sözleşmesi).
+- Sunucu: **113 test** (bellek içi depoda 111 + yalnız PostgreSQL için 2) hem bellek içi depoda hem **gerçek PostgreSQL 16**'da geçti (e2e WebSocket oyunu, yarış koşulları, hesap silme, FK zinciri dahil). Üretim derlemesi gerçek PostgreSQL ile ayağa kalkıp `/health` ve kayıt yanıtı verdi.
+- İstemci mantığı: **131 test** geçti (100 bölümün tamamı için 20 tohumla tur üretimi, labirent bağlantısı, eşleştirme/sıralama mantığı, API yeniden deneme/token yenileme, offline kuyruk, gerçek zamanlı yeniden bağlanma ve maça devam, protokol sözleşmesi).
 - İstemci Unity kodu: tüm betikler UnityEngine 2021.3 modüllerine karşı **hatasız derlendi**.
 - Mutasyon kontrolleri: kilit kaldırılınca yarış testleri, geri çekilme bozulunca yeniden bağlanma testi başarısız oldu (testler gerçekten bir şey denetliyor).
 

@@ -33,6 +33,7 @@ namespace MinikDuello.Infra
                     request.SetRequestHeader("Content-Type", JsonType);
                 }
                 request.SetRequestHeader("Accept", JsonType);
+                if (!string.IsNullOrEmpty(spec.AppVersion)) request.SetRequestHeader("X-App-Version", spec.AppVersion);
                 if (!string.IsNullOrEmpty(spec.BearerToken)) request.SetRequestHeader("Authorization", "Bearer " + spec.BearerToken);
                 request.timeout = Mathf.Max(1, Mathf.CeilToInt(spec.TimeoutSeconds));
 

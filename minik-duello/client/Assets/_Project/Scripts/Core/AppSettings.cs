@@ -11,6 +11,11 @@ namespace MinikDuello.Core
         public string WsUrl = "ws://localhost:3000/ws";
         public int ProtocolVersion = 1;
 
+        /// <summary>Uygulama sürümü (Application.version). Her API isteğinde X-App-Version olarak gönderilir.</summary>
+        public string AppVersion = "0.0.0";
+        /// <summary>Paket adı (Application.identifier); mağaza adresi üretmek için.</summary>
+        public string PackageName = string.Empty;
+
         public int TotalLevels = 100;
         public int LevelsPerWorld = 10;
 

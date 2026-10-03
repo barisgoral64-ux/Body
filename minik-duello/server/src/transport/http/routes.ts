@@ -2,6 +2,7 @@ import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 import { AUTH, LIMITS, PARENT } from "../../config/constants.js";
 import type { Container } from "../../container.js";
+import { compareVersions } from "../../domain/version.js";
 import { RateLimiter } from "../../infra/rateLimiter.js";
 import { ErrorCode, type Result } from "../../shared/result.js";
 
@@ -56,6 +57,13 @@ export function registerRoutes(app: FastifyInstance, c: Container): void {
   app.decorateRequest("playerId", "");
 
   app.addHook("onRequest", (request, reply, done) => {
+    // Çok eski istemci (X-App-Version asgari sürümün altında) zorunlu güncellemeye yönlendirilir.
+    const sent = request.headers["x-app-version"];
+    const path = request.url.split("?")[0] ?? "";
+    if (typeof sent === "string" && path.startsWith("/v1") && path !== "/v1/app-version" && compareVersions(sent, c.config.appMinVersion) === -1) {
+      void reply.status(426).send({ code: ErrorCode.ProtocolMismatch });
+      return;
+    }
     const key = request.ip;
     const bucket = request.url.startsWith("/v1/auth") ? authLimiter : limiter;
     if (!bucket.hit(key)) {
@@ -76,6 +84,13 @@ export function registerRoutes(app: FastifyInstance, c: Container): void {
     request.playerId = verified.value;
   };
   const secured = { preHandler: requireAuth };
+
+  // --- Sürüm / güncelleme (herkese açık, kimlik gerektirmez) ---
+  app.get("/v1/app-version", () => ({
+    minSupportedVersion: c.config.appMinVersion,
+    latestVersion: c.config.appLatestVersion,
+    updateUrl: c.config.appUpdateUrl,
+  }));
 
   // --- Kimlik ---
   app.post("/v1/auth/anonymous", async (req, reply) => {

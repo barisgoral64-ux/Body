@@ -219,6 +219,8 @@ namespace MinikDuello.UI
             }
 
             Section("Güvenlik");
+            UIFactory.CreateLabel(content, Strings.Version + " " + Config.AppVersion, UITheme.SmallFontSize + 4, UITheme.Neutral, UITheme.ContentWidth, TextAnchor.MiddleLeft);
+            UIFactory.CreateButton(content, "GÜNCELLEME DENETLE", UITheme.Blue, TouchTarget, true, CheckUpdate);
             UIFactory.CreateButton(content, "YENİ ARKADAŞ KODU", UITheme.Purple, TouchTarget, true, RegenerateCode);
             UIFactory.CreateButton(content, "PIN DEĞİŞTİR", UITheme.Purple, TouchTarget, true, () => GoTo(Step.ChangeCurrent));
             UIFactory.CreateButton(content, "HESABI VE VERİLERİ SİL", UITheme.Pink, TouchTarget, true, ConfirmDelete);
@@ -315,6 +317,26 @@ namespace MinikDuello.UI
                 Ui.Toast(result.IsOk ? "Oyuncu engellendi." : Messages.For(result.Error));
                 await ServiceLocator.Get<FriendManager>().RefreshAsync();
                 if (IsAlive) RenderDashboard();
+            }, true);
+        }
+
+        private void CheckUpdate()
+        {
+            RunAsync(async () =>
+            {
+                var checker = ServiceLocator.Get<VersionChecker>();
+                var result = await checker.CheckAsync();
+                if (!IsAlive) return;
+                if (!result.IsOk) { Ui.Toast(Messages.For(result.Error)); return; }
+                UpdateInfo info = result.Value;
+                if (info.Status == MinikDuello.Domain.Net.UpdateStatus.UpToDate)
+                {
+                    Ui.Toast("Uygulama güncel (" + info.CurrentVersion + ").");
+                    return;
+                }
+                Ui.ShowDialog(Strings.UpdateTitle, Strings.Version + " " + info.CurrentVersion + " → " + info.LatestVersion,
+                    new DialogButton("GÜNCELLE", UITheme.Green, () => StoreLink.Open(info.StoreUrl, Ui)),
+                    new DialogButton(Strings.Later, UITheme.Neutral));
             }, true);
         }
 

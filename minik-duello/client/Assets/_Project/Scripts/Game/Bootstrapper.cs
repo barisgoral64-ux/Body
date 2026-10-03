@@ -74,6 +74,7 @@ namespace MinikDuello.Game
             var friends = new FriendManager(api);
             var parent = new ParentControlManager(api);
             var limiter = new PlaytimeLimiter(save, clock);
+            var versions = new VersionChecker(settings, api, save);
             var realtime = new RealtimeClient(settings, socket, auth, scheduler);
             var match = new MatchSession(settings, realtime, auth, scheduler);
 
@@ -91,6 +92,7 @@ namespace MinikDuello.Game
             ServiceLocator.Register(friends);
             ServiceLocator.Register(parent);
             ServiceLocator.Register(limiter);
+            ServiceLocator.Register(versions);
             ServiceLocator.Register(realtime);
             ServiceLocator.Register(match);
             ServiceLocator.Register(audio);

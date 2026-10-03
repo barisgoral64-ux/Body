@@ -37,3 +37,4 @@ cd server && npm run export-levels
 - Çok oyunculu: davet → oda → 3-2-1-BAŞLA! → turlar; rekabet ve "Birlikte Başaralım"; kopma sonrası 15 sn içinde kaldığı yerden devam.
 - Ödüller: yıldız/coin/sticker/karakter/kostüm; günlük ödül (seri cezası yok); mağaza yalnızca oyunda kazanılan coin.
 - Ebeveyn paneli: PIN, sosyal ayarlar, süre sınırı, arkadaş kaldırma/engelleme, hesap silme.
+- Sürüm ve güncelleme: sürüm ana menüde ve ebeveyn panelinde; sunucudan zorunlu/isteğe bağlı güncelleme politikası ([`docs/15`](docs/15-versioning-and-updates.md)).

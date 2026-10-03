@@ -49,6 +49,8 @@ namespace MinikDuello.Infra
             ApiUrl = IsProduction ? productionApiUrl : developmentApiUrl,
             WsUrl = IsProduction ? productionWsUrl : developmentWsUrl,
             ProtocolVersion = protocolVersion,
+            AppVersion = Application.version,
+            PackageName = Application.identifier,
             TotalLevels = totalLevels,
             LevelsPerWorld = levelsPerWorld,
             HttpTimeoutSeconds = httpTimeoutSeconds,

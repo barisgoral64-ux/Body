@@ -22,6 +22,7 @@ namespace MinikDuello.UI
         Lobby,
         MatchGame,
         MatchResult,
-        TimeUp
+        TimeUp,
+        Update
     }
 }

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { compareVersions, parseVersion } from "../domain/version.js";
 
 const MIN_SECRET_LENGTH = 32;
 const DEV_FALLBACK_SECRET = "dev-only-secret-do-not-use-in-production-0000";
@@ -13,6 +14,9 @@ const envSchema = z.object({
   DEVICE_SECRET: z.string().optional(),
   TRUST_PROXY: z.enum(["true", "false"]).default("false"),
   DATABASE_URL: z.string().optional(),
+  APP_MIN_VERSION: z.string().default("0.0.0"),
+  APP_LATEST_VERSION: z.string().default("0.0.0"),
+  APP_UPDATE_URL: z.string().default(""),
 });
 
 export type AppEnvironment = "development" | "production" | "test";
@@ -29,6 +33,10 @@ export interface AppConfig {
   /** Yük dengeleyici arkasında gerçek istemci IP'sini X-Forwarded-For'dan al. */
   readonly trustProxy: boolean;
   readonly databaseUrl: string | null;
+  /** Bundan eski istemciler zorunlu güncellemeye yönlendirilir. */
+  readonly appMinVersion: string;
+  readonly appLatestVersion: string;
+  readonly appUpdateUrl: string;
 }
 
 /**
@@ -53,6 +61,12 @@ export function loadConfig(source: Record<string, string | undefined> = process.
   if (isProduction && env.DEVICE_SECRET === env.JWT_SECRET) {
     throw new Error("DEVICE_SECRET ve JWT_SECRET farklı olmalıdır.");
   }
+  for (const v of [env.APP_MIN_VERSION, env.APP_LATEST_VERSION]) {
+    if (!parseVersion(v)) throw new Error(`Geçersiz sürüm biçimi: "${v}" (örn. 1.2.3)`);
+  }
+  if (compareVersions(env.APP_MIN_VERSION, env.APP_LATEST_VERSION) === 1) {
+    throw new Error("APP_MIN_VERSION, APP_LATEST_VERSION'dan büyük olamaz.");
+  }
   if (isProduction && !env.DATABASE_URL) throw new Error("Üretimde DATABASE_URL zorunludur.");
 
   return Object.freeze({
@@ -65,5 +79,8 @@ export function loadConfig(source: Record<string, string | undefined> = process.
     deviceSecret: env.DEVICE_SECRET && env.DEVICE_SECRET.length > 0 ? env.DEVICE_SECRET : DEV_FALLBACK_DEVICE_SECRET,
     trustProxy: env.TRUST_PROXY === "true",
     databaseUrl: env.DATABASE_URL && env.DATABASE_URL.length > 0 ? env.DATABASE_URL : null,
+    appMinVersion: env.APP_MIN_VERSION,
+    appLatestVersion: env.APP_LATEST_VERSION,
+    appUpdateUrl: env.APP_UPDATE_URL,
   });
 }

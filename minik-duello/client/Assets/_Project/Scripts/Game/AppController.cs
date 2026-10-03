@@ -35,6 +35,7 @@ namespace MinikDuello.Game
         private RealtimeClient realtime;
         private MatchSession match;
         private ConnectivityState connectivity;
+        private VersionChecker versions;
         private IScheduler scheduler;
 
         private float limitTimer;
@@ -58,6 +59,7 @@ namespace MinikDuello.Game
             realtime = ServiceLocator.Get<RealtimeClient>();
             match = ServiceLocator.Get<MatchSession>();
             connectivity = ServiceLocator.Get<ConnectivityState>();
+            versions = ServiceLocator.Get<VersionChecker>();
             scheduler = ServiceLocator.Get<IScheduler>();
 
             // Çevrimdışıyken de süre sınırı ve ses ayarı uygulanır; sosyal özellikler güvenli varsayılanla KAPALI kalır.
@@ -75,6 +77,7 @@ namespace MinikDuello.Game
             match.ReconnectFailed += OnReconnectFailed;
             match.PhaseChanged += OnPhaseChanged;
             connectivity.Changed += OnConnectivityChanged;
+            connectivity.UpdateRequiredDetected += ForceUpdate;
             ui.ScreenShown += OnScreenShown;
 
             Boot();
@@ -84,8 +87,12 @@ namespace MinikDuello.Game
         {
             try
             {
-                await auth.EnsureRegisteredAsync();
-                await RefreshAllAsync();
+                await CheckForUpdateAsync();
+                if (!connectivity.UpdateRequired)
+                {
+                    await auth.EnsureRegisteredAsync();
+                    await RefreshAllAsync();
+                }
             }
             catch (Exception exception)
             {
@@ -96,6 +103,33 @@ namespace MinikDuello.Game
             ui.ScreenShown -= OnScreenShown;
             ui.ScreenShown += OnScreenShown;
             Log.Info("App", "Başlatma tamamlandı. Çevrimiçi: " + connectivity.IsOnline);
+        }
+
+        // --- Sürüm / güncelleme ---
+
+        private async Task CheckForUpdateAsync()
+        {
+            var result = await versions.CheckAsync();
+            if (!result.IsOk) return; // ağ yoksa güncelleme dayatılmaz
+            UpdateInfo info = result.Value;
+            if (info.Status == UpdateStatus.Required) ForceUpdate();
+            else if (versions.ShouldPromptOptional(info)) ShowOptionalUpdate(info);
+        }
+
+        /// <summary>Bu sürüm desteklenmiyor: oyun kilitlenir, yalnızca ebeveyn kapılı güncelleme ekranı açılır.</summary>
+        private void ForceUpdate()
+        {
+            if (match.InMatch) match.Leave();
+            realtime.Stop();
+            ui.SetBlockingMessage(null);
+            if (!ui.IsShowing(ScreenId.Update)) ui.ForceScreen(ScreenId.Update);
+        }
+
+        private void ShowOptionalUpdate(UpdateInfo info)
+        {
+            ui.ShowDialog(Strings.UpdateTitle, Strings.UpdateOptionalBody,
+                new DialogButton(Strings.UpdateButton, UITheme.Green, () => ui.RunBehindParentGate(() => StoreLink.Open(info.StoreUrl, ui))),
+                new DialogButton(Strings.Later, UITheme.Neutral, () => versions.Dismiss(info)));
         }
 
         private async Task RefreshAllAsync()
@@ -143,6 +177,7 @@ namespace MinikDuello.Game
         {
             int limit = parent.Settings.DailyLimitMinutes;
             LimitState state = limiter.State(limit);
+            if (ui.IsShowing(ScreenId.Update)) return;
             if (state == LimitState.Exceeded && !ui.IsShowing(ScreenId.TimeUp))
             {
                 if (match.InMatch) match.Leave();
@@ -180,7 +215,7 @@ namespace MinikDuello.Game
 
         private void OnConnectivityChanged(bool online)
         {
-            if (online && booted) RunSafe(RefreshAllAsync);
+            if (online && booted && !connectivity.UpdateRequired) RunSafe(RefreshAllAsync);
         }
 
         private void OnScreenShown(ScreenId id)

@@ -11,6 +11,7 @@ namespace MinikDuello.UI
     {
         private RectTransform header;
         private Text offlineNote;
+        private Text versionLabel;
         private GameObject dailyButton;
         private Button friendsButton;
 
@@ -25,6 +26,7 @@ namespace MinikDuello.UI
             UIFactory.CreateButton(transform, Strings.MyCharacter, UITheme.Green, TouchTarget, false, () => Ui.Show(ScreenId.Character));
             UIFactory.CreateButton(transform, Strings.Rewards, UITheme.Purple, TouchTarget, false, () => Ui.Show(ScreenId.Rewards));
 
+            versionLabel = UIFactory.CreateLabel(transform, string.Empty, UITheme.SmallFontSize, UITheme.Neutral, UITheme.ContentWidth);
             RectTransform row = UIFactory.CreateRow(transform, UITheme.Spacing, TouchTarget);
             dailyButton = UIFactory.CreateButton(row, Strings.Daily, UITheme.Yellow, TouchTarget, true, () => Ui.Show(ScreenId.DailyReward)).gameObject;
             // Ebeveyn alanı küçük ve yetişkin kapısının arkasında.
@@ -34,6 +36,7 @@ namespace MinikDuello.UI
         protected override void OnShown()
         {
             BuildHeader();
+            versionLabel.text = Strings.Version + " " + Config.AppVersion;
             var connectivity = ServiceLocator.Get<ConnectivityState>();
             offlineNote.gameObject.SetActive(!connectivity.IsOnline);
             dailyButton.SetActive(false);

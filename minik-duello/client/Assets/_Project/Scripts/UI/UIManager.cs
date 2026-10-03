@@ -42,6 +42,7 @@ namespace MinikDuello.UI
         private Coroutine toastRoutine;
         private int loadingDepth;
         private ScreenId gateTarget = ScreenId.MainMenu;
+        private Action gateAction;
 
         public NavContext Context { get; } = new NavContext();
         public ScreenId Current => stack.Current;
@@ -102,11 +103,28 @@ namespace MinikDuello.UI
         public void ShowBehindParentGate(ScreenId target)
         {
             gateTarget = target;
+            gateAction = null;
+            Show(ScreenId.ParentGate);
+        }
+
+        /// <summary>Bir eylemi (örn. mağaza bağlantısını açmak) yetişkin doğrulamasından sonra çalıştırır.</summary>
+        public void RunBehindParentGate(Action action)
+        {
+            gateAction = action;
             Show(ScreenId.ParentGate);
         }
 
         public void CompleteParentGate()
         {
+            if (gateAction != null)
+            {
+                Action action = gateAction;
+                gateAction = null;
+                stack.Pop(out _);
+                Present();
+                action();
+                return;
+            }
             stack.ReplaceTop(gateTarget);
             Present();
         }
@@ -238,6 +256,7 @@ namespace MinikDuello.UI
                 case ScreenId.MatchGame: return target.AddComponent<MatchGameScreen>();
                 case ScreenId.MatchResult: return target.AddComponent<MatchResultScreen>();
                 case ScreenId.TimeUp: return target.AddComponent<TimeUpScreen>();
+                case ScreenId.Update: return target.AddComponent<UpdateScreen>();
                 default: throw new ArgumentOutOfRangeException(nameof(id), id, "Ekran tanımlı değil");
             }
         }

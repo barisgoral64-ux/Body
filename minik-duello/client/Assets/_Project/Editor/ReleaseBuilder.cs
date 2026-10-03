@@ -64,7 +64,8 @@ namespace MinikDuello.Editor
                 NamedBuildTarget android = NamedBuildTarget.Android;
                 PlayerSettings.productName = "Minik Düello (Test)";
                 PlayerSettings.SetApplicationIdentifier(android, Environment.GetEnvironmentVariable("MINIK_PACKAGE") ?? "com.example.minikduello.test");
-                PlayerSettings.bundleVersion = "0.0.1-test";
+                PlayerSettings.bundleVersion = Environment.GetEnvironmentVariable("MINIK_VERSION") ?? "0.1.0-test";
+                if (int.TryParse(Environment.GetEnvironmentVariable("MINIK_BUILD"), out int testCode)) PlayerSettings.Android.bundleVersionCode = testCode;
                 PlayerSettings.SetScriptingBackend(android, ScriptingImplementation.IL2CPP);
                 PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
                 PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel24;

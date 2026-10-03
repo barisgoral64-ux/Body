@@ -52,7 +52,8 @@ namespace MinikDuello.Services.Api
                     Url = settings.ApiUrl + path,
                     Body = json,
                     BearerToken = token,
-                    TimeoutSeconds = settings.HttpTimeoutSeconds
+                    TimeoutSeconds = settings.HttpTimeoutSeconds,
+                    AppVersion = settings.AppVersion
                 });
 
                 connectivity?.Report(!response.NetworkError);
@@ -64,6 +65,9 @@ namespace MinikDuello.Services.Api
                     await scheduler.DelayAsync(wait);
                     continue;
                 }
+
+                // 426: sunucu bu uygulama sürümünü artık desteklemiyor.
+                if (response.StatusCode == 426) connectivity?.ReportUpdateRequired();
 
                 if (response.StatusCode == 401 && !refreshed)
                 {

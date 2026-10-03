@@ -76,5 +76,11 @@ namespace MinikDuello.Core
         public const string EnterPin = "Ebeveyn PIN'i";
         public const string Comeback = "Yakında!";
         public const string FriendsOff = "Arkadaşlık kapalı";
+        public const string Version = "Sürüm";
+        public const string UpdateTitle = "Yeni sürüm hazır!";
+        public const string UpdateRequiredBody = "Oynamaya devam etmek için uygulamanın güncellenmesi gerekiyor. Bir yetişkinden yardım iste.";
+        public const string UpdateOptionalBody = "Yeni özellikler var. Bir yetişkin güncelleyebilir.";
+        public const string UpdateButton = "GÜNCELLE (YETİŞKİN)";
+        public const string Later = "SONRA";
     }
 }

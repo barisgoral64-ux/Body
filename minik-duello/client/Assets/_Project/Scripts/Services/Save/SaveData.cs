@@ -46,6 +46,8 @@ namespace MinikDuello.Services.Save
         /// <summary>Çevrimdışıyken de uygulanabilmesi için ebeveyn ayarlarının önbelleği (yalnızca kısıtlayıcı olanlar).</summary>
         public int CachedDailyLimit { get; set; }
         public bool CachedSoundEnabled { get; set; } = true;
+        /// <summary>Kullanıcının "sonra" dediği isteğe bağlı güncelleme sürümü (aynı sürüm için tekrar sorulmaz).</summary>
+        public string DismissedUpdateVersion { get; set; }
         public string LastDailyPromptDay { get; set; }
         public bool OnboardingDone { get; set; }
     }

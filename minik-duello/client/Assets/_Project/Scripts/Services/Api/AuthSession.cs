@@ -144,7 +144,8 @@ namespace MinikDuello.Services.Api
             Method = "POST",
             Url = settings.ApiUrl + path,
             Body = body,
-            TimeoutSeconds = settings.HttpTimeoutSeconds
+            TimeoutSeconds = settings.HttpTimeoutSeconds,
+            AppVersion = settings.AppVersion
         };
 
         private static T TryParse<T>(string json) where T : class
