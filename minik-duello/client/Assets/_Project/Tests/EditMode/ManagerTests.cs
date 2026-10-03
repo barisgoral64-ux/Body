@@ -327,5 +327,62 @@ namespace MinikDuello.Tests
             Assert.AreEqual("hat_party", characters.EquippedBySlot()["hat"]);
             Assert.IsTrue(rewards.Owns("hat_party"));
         }
+
+        // --- Hesap silme ---
+
+        [Test]
+        public async Task DeleteAccount_Success_PublishesEvent_AndSendsConfirmedPin()
+        {
+            var parent = new ParentControlManager(api);
+            bool deleted = false;
+            EventBus.Subscribe<AccountDeleted>(_ => deleted = true);
+            http.Handler = spec => FakeHttp.Ok("{\"ok\":true}");
+
+            Result<Unit> r = await parent.DeleteAccountAsync("1234");
+            Assert.IsTrue(r.IsOk);
+            Assert.IsTrue(deleted);
+            string body = http.Requests.Last().Body;
+            StringAssert.Contains("\"confirm\":true", body);
+            StringAssert.Contains("\"pin\":\"1234\"", body);
+            Assert.IsFalse(parent.SocialAvailable);
+        }
+
+        [Test]
+        public async Task DeleteAccount_WrongPin_KeepsEverything()
+        {
+            var parent = new ParentControlManager(api);
+            bool deleted = false;
+            EventBus.Subscribe<AccountDeleted>(_ => deleted = true);
+            http.Handler = spec => FakeHttp.Error(403, "FORBIDDEN");
+
+            Result<Unit> r = await parent.DeleteAccountAsync("0000");
+            Assert.AreEqual(ErrorCode.Forbidden, r.Error);
+            Assert.IsFalse(deleted);
+        }
+
+        [Test]
+        public void ClearAll_RemovesIdentity_AndNextRegistrationUsesNewDeviceId()
+        {
+            string oldDevice = auth.DeviceId;
+            store.Set("auth.player", "p1");
+            auth.ClearAll();
+            Assert.IsFalse(auth.HasSession);
+            Assert.IsNull(auth.PlayerId);
+            Assert.AreNotEqual(oldDevice, auth.DeviceId);
+        }
+
+        [Test]
+        public void SaveReset_ClearsProgressAndPendingResults()
+        {
+            save.Update(d =>
+            {
+                d.Levels[1] = new LevelRecord { Stars = 3, BestScore = 500 };
+                d.Pending.Add(new PendingResult { LevelId = 1, Score = 500, DurationMs = 20000 });
+            });
+            save.Reset();
+            Assert.AreEqual(0, save.Data.Levels.Count);
+            Assert.AreEqual(0, save.Data.Pending.Count);
+            Assert.AreEqual(0, new SaveManager(store).Data.Levels.Count);
+        }
     }
 }

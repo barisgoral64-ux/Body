@@ -2,7 +2,8 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { ROOM, ROUND_TIMING } from "../src/config/constants.js";
+import { DAILY_REWARD_CYCLE, ROOM, ROUND_TIMING, STAR_UNLOCKS } from "../src/config/constants.js";
+import { REWARD_CATALOG } from "../src/domain/rewards.js";
 import { clientMessageSchema, type ServerMessage } from "../src/protocol.js";
 import { correctChoices, createEnv, enableSocial, messagesTo, newPlayer, wrongChoice } from "./helpers.js";
 import type { RoundView } from "../src/protocol.js";
@@ -10,6 +11,7 @@ import type { RoundView } from "../src/protocol.js";
 const DIR = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "protocol");
 const CLIENT_FILE = join(DIR, "client-messages.json");
 const SERVER_FILE = join(DIR, "server-messages.json");
+const REWARDS_FILE = join(DIR, "rewards.json");
 const UPDATE = process.env.UPDATE_FIXTURES === "1";
 
 const clientMessages: Record<string, unknown> = {
@@ -105,6 +107,19 @@ async function captureServerMessages(): Promise<Record<string, ServerMessage["pa
 }
 
 describe("protokol fixture'ları (istemci ↔ sunucu sözleşmesi)", () => {
+  it("ödül kataloğu ve günlük takvim kayıtlı fixture ile aynı (istemci kataloğu da güncellenmeli)", () => {
+    const current = {
+      catalog: REWARD_CATALOG.map((r) => ({ id: r.id, type: r.type, slot: r.slot, shopPrice: r.shopPrice })),
+      daily: DAILY_REWARD_CYCLE,
+      starUnlocks: STAR_UNLOCKS,
+    };
+    if (UPDATE) {
+      mkdirSync(DIR, { recursive: true });
+      writeFileSync(REWARDS_FILE, `${JSON.stringify(current, null, 2)}\n`);
+    }
+    expect(JSON.parse(readFileSync(REWARDS_FILE, "utf8"))).toEqual(JSON.parse(JSON.stringify(current)));
+  });
+
   it("istemci mesaj örnekleri sunucu şemasından geçer", () => {
     for (const [name, msg] of Object.entries(clientMessages)) {
       expect(clientMessageSchema.safeParse(msg).success, name).toBe(true);

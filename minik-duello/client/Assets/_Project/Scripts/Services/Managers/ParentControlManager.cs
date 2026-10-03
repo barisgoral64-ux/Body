@@ -9,6 +9,11 @@ namespace MinikDuello.Services.Managers
     {
     }
 
+    /// <summary>Hesap sunucuda silindi: yerel verinin de temizlenmesi gerekir.</summary>
+    public sealed class AccountDeleted
+    {
+    }
+
     /// <summary>Ebeveyn paneli işlemleri. PIN doğrulaması sunucudadır; yanlış denemede sunucu kilitler.</summary>
     public sealed class ParentControlManager
     {
@@ -80,6 +85,18 @@ namespace MinikDuello.Services.Managers
         {
             Result<FriendCodeResponseDto> r = await api.PostAsync<FriendCodeResponseDto>("/v1/parent/regenerate-code", new { pin });
             return r.IsOk ? Result<string>.Ok(r.Value.FriendCode) : Result<string>.Fail(r.Error, r.Message);
+        }
+
+        /// <summary>Hesabı ve tüm veriyi kalıcı siler (PIN gerekir). Başarılıysa AccountDeleted olayı yayımlanır.</summary>
+        public async Task<Result<Unit>> DeleteAccountAsync(string pin)
+        {
+            Result<Unit> result = await api.PostAsync<Unit>("/v1/parent/delete-account", new { pin, confirm = true });
+            if (result.IsOk)
+            {
+                Settings = new ParentSettingsDto();
+                EventBus.Publish(new AccountDeleted());
+            }
+            return result;
         }
 
         public Task<Result<Unit>> RemoveFriendAsync(string friendId, string pin) =>

@@ -19,6 +19,10 @@ Gerçek, çalışır DDL: [`server/migrations/001_init.sql`](../server/migration
 | `parent_settings` | Ebeveyn ayarları | `player_id`, bayraklar, `pin_hash`, `daily_limit_minutes` |
 | `blocked_players` | Engelleme | `player_id`, `blocked_id`, `created_at` |
 | `coin_ledger` | Coin defteri (sahtecilik önleme) | `entry_id`, `player_id`, `delta`, `reason`, `ref_id` |
+| `star_events` | Haftalık arkadaş skoru için yıldız olayları | `player_id`, `stars`, `created_at` |
+| `daily_claims` | Günlük ödül durumu (seri cezası yok) | `player_id`, `claim_count`, `last_claim_day` |
+| `player_saves` | Bulut kaydı (yalnızca tercihler) | `player_id`, `data` JSONB, `updated_at` |
+| `friend_code_attempts` | Arkadaş kodu tahmin sayacı (numaralandırma önleme) | `sender_id`, `created_at` |
 
 ## İlişkiler
 ```
@@ -35,5 +39,6 @@ players N─N players (blocked_players)
 - **Arkadaşlık tek satır:** `player_a < player_b` ile mükerrer ve tek taraflı kayıt imkansız.
 - **Engelleme**: isteğin/davetin/mesajın sunucu tarafında her seferinde `blocked_players` ile kontrolü.
 - **Kişisel veri yok:** tabloda isim/e-posta/telefon alanı bulunmaz. `pin_hash` yalnızca hash.
-- **Redis anahtarları (geçici):** `presence:{playerId}` (TTL 45 sn), `room:{roomId}` (oda durumu), `resume:{token}`.
+- **Hesap silme:** `DELETE FROM players` tüm bağlı tabloları `ON DELETE CASCADE` ile temizler; `game_rooms` oyuncu alanları `SET NULL` olur (rakibin maç geçmişi korunur, silinenin izi kalmaz). Gerçek PostgreSQL üzerinde testlidir.
+- **Presence ve oda durumu** şu an süreç içindedir (tek örnek); Redis planlıdır, yapılmadı.
 - **İndeksler:** `friend_code`, `friend_requests(receiver_id,status)`, `game_invites(receiver_id,status)`, `player_progress(player_id)`.

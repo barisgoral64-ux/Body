@@ -1,0 +1,216 @@
+{
+  "catalog": [
+    {
+      "id": "char_panda",
+      "type": "character",
+      "slot": "character",
+      "shopPrice": null
+    },
+    {
+      "id": "char_rabbit",
+      "type": "character",
+      "slot": "character",
+      "shopPrice": null
+    },
+    {
+      "id": "char_cat",
+      "type": "character",
+      "slot": "character",
+      "shopPrice": null
+    },
+    {
+      "id": "char_dog",
+      "type": "character",
+      "slot": "character",
+      "shopPrice": null
+    },
+    {
+      "id": "char_dinosaur",
+      "type": "character",
+      "slot": "character",
+      "shopPrice": null
+    },
+    {
+      "id": "char_fox",
+      "type": "character",
+      "slot": "character",
+      "shopPrice": null
+    },
+    {
+      "id": "char_koala",
+      "type": "character",
+      "slot": "character",
+      "shopPrice": null
+    },
+    {
+      "id": "char_penguin",
+      "type": "character",
+      "slot": "character",
+      "shopPrice": null
+    },
+    {
+      "id": "hat_party",
+      "type": "hat",
+      "slot": "hat",
+      "shopPrice": null
+    },
+    {
+      "id": "hat_crown",
+      "type": "hat",
+      "slot": "hat",
+      "shopPrice": 150
+    },
+    {
+      "id": "glasses_round",
+      "type": "glasses",
+      "slot": "glasses",
+      "shopPrice": null
+    },
+    {
+      "id": "glasses_star",
+      "type": "glasses",
+      "slot": "glasses",
+      "shopPrice": 120
+    },
+    {
+      "id": "outfit_hero",
+      "type": "costume",
+      "slot": "outfit",
+      "shopPrice": 200
+    },
+    {
+      "id": "outfit_explorer",
+      "type": "costume",
+      "slot": "outfit",
+      "shopPrice": 200
+    },
+    {
+      "id": "shoes_runner",
+      "type": "shoes",
+      "slot": "shoes",
+      "shopPrice": 100
+    },
+    {
+      "id": "backpack_rocket",
+      "type": "backpack",
+      "slot": "backpack",
+      "shopPrice": null
+    },
+    {
+      "id": "backpack_wings",
+      "type": "backpack",
+      "slot": "backpack",
+      "shopPrice": 180
+    },
+    {
+      "id": "effect_sparkle",
+      "type": "effect",
+      "slot": "effect",
+      "shopPrice": null
+    },
+    {
+      "id": "frame_gold",
+      "type": "frame",
+      "slot": "frame",
+      "shopPrice": null
+    },
+    {
+      "id": "sticker_star",
+      "type": "sticker",
+      "slot": "sticker",
+      "shopPrice": null
+    },
+    {
+      "id": "sticker_heart",
+      "type": "sticker",
+      "slot": "sticker",
+      "shopPrice": null
+    },
+    {
+      "id": "sticker_rainbow",
+      "type": "sticker",
+      "slot": "sticker",
+      "shopPrice": null
+    }
+  ],
+  "daily": [
+    {
+      "coins": 50,
+      "rewardId": null
+    },
+    {
+      "coins": 0,
+      "rewardId": "sticker_star"
+    },
+    {
+      "coins": 100,
+      "rewardId": null
+    },
+    {
+      "coins": 0,
+      "rewardId": "sticker_heart"
+    },
+    {
+      "coins": 150,
+      "rewardId": null
+    },
+    {
+      "coins": 0,
+      "rewardId": "sticker_rainbow"
+    },
+    {
+      "coins": 200,
+      "rewardId": null
+    }
+  ],
+  "starUnlocks": [
+    {
+      "stars": 5,
+      "rewardId": "hat_party"
+    },
+    {
+      "stars": 10,
+      "rewardId": "char_rabbit"
+    },
+    {
+      "stars": 20,
+      "rewardId": "glasses_round"
+    },
+    {
+      "stars": 30,
+      "rewardId": "char_cat"
+    },
+    {
+      "stars": 45,
+      "rewardId": "frame_gold"
+    },
+    {
+      "stars": 60,
+      "rewardId": "char_dog"
+    },
+    {
+      "stars": 80,
+      "rewardId": "backpack_rocket"
+    },
+    {
+      "stars": 100,
+      "rewardId": "char_dinosaur"
+    },
+    {
+      "stars": 130,
+      "rewardId": "effect_sparkle"
+    },
+    {
+      "stars": 160,
+      "rewardId": "char_fox"
+    },
+    {
+      "stars": 200,
+      "rewardId": "char_koala"
+    },
+    {
+      "stars": 250,
+      "rewardId": "char_penguin"
+    }
+  ]
+}

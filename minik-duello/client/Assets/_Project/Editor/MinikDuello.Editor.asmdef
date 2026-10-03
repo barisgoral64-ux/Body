@@ -1,0 +1,7 @@
+{
+  "name": "MinikDuello.Editor",
+  "rootNamespace": "MinikDuello.Editor",
+  "references": ["MinikDuello.Core", "MinikDuello.Infra"],
+  "includePlatforms": ["Editor"],
+  "autoReferenced": false
+}

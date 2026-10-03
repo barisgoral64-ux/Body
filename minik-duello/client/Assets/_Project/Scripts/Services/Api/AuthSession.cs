@@ -72,6 +72,17 @@ namespace MinikDuello.Services.Api
             return refreshing;
         }
 
+        /// <summary>Hesap silindi: tüm kimlik bilgileri (cihaz kimliği dahil) silinir; sonraki açılış yeni hesap açar.</summary>
+        public void ClearAll()
+        {
+            store.Remove(KeyAccess);
+            store.Remove(KeyRefresh);
+            store.Remove(KeyDevice);
+            store.Remove(KeyPlayer);
+            store.Remove(KeyCode);
+            store.Remove(KeyName);
+        }
+
         public void Clear()
         {
             store.Remove(KeyAccess);

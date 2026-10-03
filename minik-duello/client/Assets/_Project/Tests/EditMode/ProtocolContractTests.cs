@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using MinikDuello.Domain.Net;
+using MinikDuello.Domain.Rewards;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
@@ -89,6 +90,44 @@ namespace MinikDuello.Tests
             JObject s = Server();
             if (s["room.round.stars"] == null) Assert.Ignore("Bu fixture'da yıldız turu yok.");
             Assert.IsTrue(Json.Deserialize<RoundDto>(s["room.round.stars"].ToString()).Multi);
+        }
+
+        [Test]
+        public void RewardCatalog_MatchesServer()
+        {
+            JObject f = JObject.Parse(File.ReadAllText(TestPaths.Protocol("rewards.json")));
+            var server = ((JArray)f["catalog"]).Select(t => (id: (string)t["id"], type: (string)t["type"], slot: (string)t["slot"], price: (int?)t["shopPrice"])).ToList();
+
+            Assert.AreEqual(server.Count, RewardCatalog.All.Count, "Ödül sayısı farklı");
+            foreach (var s in server)
+            {
+                RewardDef def = RewardCatalog.Find(s.id);
+                Assert.IsNotNull(def, s.id + " istemci kataloğunda yok");
+                Assert.AreEqual(s.type, def.Type.ToString().ToLowerInvariant(), s.id + " türü");
+                Assert.AreEqual(s.slot, def.Slot, s.id + " slotu");
+                Assert.AreEqual(s.price, def.ShopPrice, s.id + " fiyatı");
+            }
+        }
+
+        [Test]
+        public void DailyCycle_MatchesServer()
+        {
+            JObject f = JObject.Parse(File.ReadAllText(TestPaths.Protocol("rewards.json")));
+            JArray daily = (JArray)f["daily"];
+            Assert.AreEqual(daily.Count, DailyCycle.Days.Length);
+            for (int i = 0; i < daily.Count; i++)
+            {
+                Assert.AreEqual((int)daily[i]["coins"], DailyCycle.Days[i].Coins, "Gün " + (i + 1));
+                Assert.AreEqual((string)daily[i]["rewardId"], DailyCycle.Days[i].RewardId, "Gün " + (i + 1));
+            }
+        }
+
+        [Test]
+        public void StarUnlocks_ReferenceExistingRewards()
+        {
+            JObject f = JObject.Parse(File.ReadAllText(TestPaths.Protocol("rewards.json")));
+            foreach (JToken u in (JArray)f["starUnlocks"]) Assert.IsNotNull(RewardCatalog.Find((string)u["rewardId"]), (string)u["rewardId"]);
+            foreach (string c in RewardCatalog.CharacterIds) Assert.IsNotNull(RewardCatalog.Find(RewardCatalog.CharacterPrefix + c), c);
         }
 
         private static void AssertMapped<T>(JObject fixtures, string key)

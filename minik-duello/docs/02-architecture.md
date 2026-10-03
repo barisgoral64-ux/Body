@@ -3,11 +3,11 @@
 ## 2.1 Teknoloji Seçimi ve Gerekçe
 | Katman | Seçim | Neden |
 |---|---|---|
-| İstemci | Unity 2022 LTS+ / C# | Tek kod tabanı iOS+Android, 2D performans, Addressables ile lazy loading |
+| İstemci | Unity 2022 LTS+ / C# | Tek kod tabanı iOS+Android, 2D performans; ekranlar ve görseller ilk kullanımda üretilir (lazy), havuzlama ve prosedürel sprite önbelleği |
 | Gerçek zamanlı | WebSocket (JSON mesaj, şema sürümlü) | Basit, sıra tabanlı/hafif oyunlar için yeterli, düşük bant genişliği |
 | REST API | Fastify (Node.js, TypeScript) | Hesap, arkadaşlık, kayıt, ebeveyn paneli |
 | Veritabanı | PostgreSQL | İlişkisel bütünlük (arkadaşlık, envanter) |
-| Önbellek/Presence/Oda | Redis | Presence TTL, oda durumu, pub/sub ile yatay ölçekleme |
+| Presence/Oda durumu | Süreç içi (tek örnek) | **Şu an tek sunucu örneği**. Yatay ölçekleme için Redis (presence TTL, oda durumu, pub/sub) planlıdır; yapılmadı. |
 | Doğrulama | Zod | Her gelen mesaj sunucuda şema doğrulanır |
 | Kimlik | Anonim cihaz hesabı + JWT; ebeveyn PIN'i ayrı | E-posta/telefon toplanmaz |
 

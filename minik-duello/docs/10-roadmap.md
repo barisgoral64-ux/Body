@@ -24,3 +24,7 @@
 | 20 | Optimizasyon / release | Profil, atlas, mağaza uyumu, hukuk onayı | |
 
 Kural: her faz sonunda çalışan, testli, commit'lenmiş bir durum.
+
+## Durum (dürüst özet)
+Kod tarafında FAZ 1-19 tamamlandı; FAZ 20 (optimizasyon/yayın hazırlığı) kısmen: derleme betiği, CI, Docker ve yayın kontrol listesi hazır, **cihaz profili, sanatçı varlıkları, ses kayıtları ve hukuki onay yok**.
+Ayrıntı: `docs/12-play-store-release.md` ve `docs/14-testing.md`.

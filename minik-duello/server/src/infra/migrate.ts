@@ -1,11 +1,22 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Pool } from "pg";
 import { buildLevelCatalog } from "../domain/levels.js";
 import { REWARD_CATALOG } from "../domain/rewards.js";
 
-const MIGRATIONS_DIR = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "migrations");
+/** Kaynakta (src/infra) ve derlenmiş çıktıda (dist/infra) aynı şekilde çalışsın diye yukarı doğru aranır. */
+function findMigrationsDir(): string {
+  let dir = dirname(fileURLToPath(import.meta.url));
+  for (let i = 0; i < 6; i += 1) {
+    const candidate = join(dir, "migrations");
+    if (existsSync(join(candidate, "001_init.sql"))) return candidate;
+    dir = dirname(dir);
+  }
+  throw new Error("migrations klasörü bulunamadı");
+}
+
+const MIGRATIONS_DIR = findMigrationsDir();
 
 /** Sıralı SQL göçleri; her dosya bir kez, tek işlemde uygulanır. */
 export async function runMigrations(pool: Pool, dir: string = MIGRATIONS_DIR): Promise<string[]> {

@@ -11,6 +11,7 @@ namespace MinikDuello.Tests
         public string Get(string key) => Data.TryGetValue(key, out string v) ? v : null;
         public void Set(string key, string value) => Data[key] = value;
         public void Remove(string key) => Data.Remove(key);
+        public void Clear() => Data.Clear();
     }
 
     public sealed class FakeClock : IClock

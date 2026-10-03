@@ -34,3 +34,6 @@
 | 30 | Süre Doldu | Nazik mola ekranı | Korkutucu değil |
 | 31 | Bağlantı Yok | İkonlu, "Tek başına oynayabilirsin" | |
 | 32 | Güncelleme Gerekli | Protokol uyumsuzluğu | |
+
+
+> **Uygulama notu:** Listedeki ekranların tamamı kodlanmıştır (`ScreenId` enum'u: 21 ekran). Splash/ilk karakter seçimi ayrı ekran değildir: uygulama doğrudan ana menüye açılır, karakter ekranından seçilir (başlangıç karakteri Panda). Davet, hazır mesaj, bağlantı yok, mola ve yeniden bağlanma durumları açılır pencere/katman olarak uygulanmıştır.

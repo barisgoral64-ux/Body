@@ -17,6 +17,12 @@ namespace MinikDuello.Infra
             PlayerPrefs.Save();
         }
 
+        public void Clear()
+        {
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
+        }
+
         public void Remove(string key)
         {
             PlayerPrefs.DeleteKey(key);

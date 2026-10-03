@@ -1,0 +1,67 @@
+name: CI
+on:
+  push:
+  pull_request:
+
+jobs:
+  server:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: minik_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build
+      - name: Testler (bellek içi depo)
+        run: npm test
+      - name: Testler (gerçek PostgreSQL)
+        run: npm test
+        env:
+          TEST_DATABASE_URL: postgres://postgres:postgres@localhost:5432/minik_test
+      - run: npm audit --omit=dev --audit-level=high
+
+  client-logic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Saf C# katmanı testleri (Core, Domain, Services)
+        run: dotnet test client/Tools/LogicTests
+      - name: Unity'ye bağlı kod derleme denetimi (UnityEngine 2021.3 + uGUI taslağı)
+        run: dotnet build client/Tools/CompileCheck
+
+  levels-in-sync:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - run: npm ci
+      - name: levels.json sunucu kataloğuyla aynı olmalı
+        run: |
+          npm run -s export-levels
+          git diff --exit-code -- ../client/Assets/_Project/Resources/levels.json

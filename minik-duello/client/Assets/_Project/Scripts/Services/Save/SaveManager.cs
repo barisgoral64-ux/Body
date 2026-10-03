@@ -27,6 +27,13 @@ namespace MinikDuello.Services.Save
             Save();
         }
 
+        /// <summary>Tüm yerel kaydı sıfırlar (hesap silme).</summary>
+        public void Reset()
+        {
+            Data = new SaveData();
+            Save();
+        }
+
         public void Save() => store.Set(Key, Json.Serialize(Data));
 
         private SaveData Load()

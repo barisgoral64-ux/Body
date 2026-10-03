@@ -65,6 +65,7 @@ namespace MinikDuello.Game
             parent.Settings.SoundEnabled = save.Data.CachedSoundEnabled;
 
             EventBus.Subscribe<ParentSettingsChanged>(OnParentSettingsChanged);
+            EventBus.Subscribe<AccountDeleted>(OnAccountDeleted);
             realtime.MessageReceived += OnRealtimeMessage;
             realtime.Replaced += () => ui.Toast("Oyun başka bir cihazda açıldı.");
             match.InviteReceived += OnInviteReceived;
@@ -186,6 +187,20 @@ namespace MinikDuello.Game
         {
             // Ana menüye her dönüşte arka planda hafifçe tazele (ağ yoksa sessizce geçer).
             if (id == ScreenId.MainMenu && booted) RunSafe(async () => { await player.RefreshAsync(); await levels.FlushPendingAsync(); });
+        }
+
+        /// <summary>Hesap silindi: yerel her şey temizlenir ve uygulama temiz bir anonim hesapla yeniden başlar.</summary>
+        private void OnAccountDeleted(AccountDeleted _)
+        {
+            realtime.Stop();
+            match.Reset();
+            auth.ClearAll();
+            ServiceLocator.Get<IKeyValueStore>().Clear();
+            save.Reset();
+            ui.SetBlockingMessage(null);
+            ui.GoHome();
+            ui.Toast("Hesap ve tüm veriler silindi.");
+            Boot();
         }
 
         // --- Gerçek zamanlı mesajlar ---

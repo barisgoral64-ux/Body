@@ -1,51 +1,43 @@
-# 8. Proje Klasör Yapısı
+# 8. Proje Klasör Yapısı (gerçek)
 
 ```
 minik-duello/
-├─ README.md
-├─ docs/                          # Tasarım dokümanları (bu klasör)
-├─ client/                        # Unity projesi
-│  └─ Assets/
-│     ├─ _Project/
-│     │  ├─ Scripts/
-│     │  │  ├─ Core/             # ServiceLocator, EventBus, Logger, Result, Environment, GameConfig
-│     │  │  ├─ Game/             # GameManager, Bootstrapper, SceneLoader
-│     │  │  ├─ Levels/           # LevelConfig, LevelManager, DifficultyManager
-│     │  │  ├─ MiniGames/        # IMiniGame, MiniGameFactory, Colors/, Shapes/, Numbers/ …
-│     │  │  ├─ Multiplayer/      # RoomManager, MatchManager, protokol modelleri
-│     │  │  ├─ Networking/       # HttpClient, WebSocketClient, ReconnectPolicy
-│     │  │  ├─ Friends/          # FriendManager, FriendRequest, GameInvite
-│     │  │  ├─ Player/           # PlayerManager, PlayerProfile
-│     │  │  ├─ Characters/       # CharacterManager, CosmeticSlot
-│     │  │  ├─ Rewards/          # RewardManager, InventoryManager, DailyReward
-│     │  │  ├─ UI/               # UIManager, Screens/, Components/, SafeAreaFitter
-│     │  │  ├─ Audio/            # AudioManager, VoicePrompt
-│     │  │  ├─ Animations/       # Confetti, StarBurst, Dance, HighFive
-│     │  │  ├─ Database/         # LocalSave, SaveManager, CloudSyncService
-│     │  │  ├─ Services/         # API istemci servisleri (Auth, Player, Friend…)
-│     │  │  ├─ Security/         # TokenStore, şifreleme, giriş doğrulama
-│     │  │  ├─ ParentControls/   # ParentControlManager, ParentGate, ParentSettings
-│     │  │  └─ Utils/
-│     │  ├─ Config/              # GameConfig.asset, levels.json
-│     │  ├─ Scenes/              # Boot, Menu, Game, Lobby
-│     │  ├─ Art/  Audio/  Prefabs/  Addressables/
-│     │  └─ Tests/               # EditMode, PlayMode
-│     └─ (Packages, ProjectSettings…)
-└─ server/                        # Node.js + TypeScript
-   ├─ package.json  tsconfig.json  vitest.config.ts  .env.example
-   ├─ migrations/                 # SQL
-   ├─ src/
-   │  ├─ main.ts                  # Giriş noktası
-   │  ├─ app.ts                   # Fastify uygulaması (testte yeniden kullanılır)
-   │  ├─ config/                  # env, sabitler (magic number yok)
-   │  ├─ infra/                   # logger, db, redis
-   │  ├─ domain/                  # saf modeller + kurallar
-   │  ├─ services/                # Auth, Player, Friend, FriendRequest, Multiplayer, Match, Room, Reward, Leaderboard, ParentControl, Save, Notification
-   │  ├─ transport/
-   │  │  ├─ http/                 # route'lar
-   │  │  └─ ws/                   # WebSocket gateway, mesaj şemaları
-   │  └─ shared/                  # hata kodları, Result
-   └─ test/                       # birim + entegrasyon testleri
+├─ README.md  docker-compose.yml  .github/workflows/ (ci.yml, unity-android.yml*)
+├─ docs/                              # Tasarım, güvenlik, yayın, test dokümanları
+├─ protocol/                          # Sunucu↔istemci sözleşme fixture'ları (gerçek mesajlardan)
+├─ server/                            # Node.js + TypeScript (Fastify, ws, pg, zod)
+│  ├─ migrations/001_init.sql         # PostgreSQL şeması
+│  ├─ scripts/ (export-levels.ts, migrate.ts)
+│  ├─ src/
+│  │  ├─ config/    (constants.ts, env.ts)        # magic number yok, ortam ayrımı
+│  │  ├─ domain/    (saf kurallar: puan, seviye kataloğu, ödül, arkadaş isteği, kimlik…)
+│  │  ├─ game/      (tasks.ts, gameRoom.ts, roomService.ts)   # sunucu otoriter oda motoru
+│  │  ├─ services/  (auth, player, parentControl, friend, friendRequest, presence, multiplayer,
+│  │  │              reward, level, leaderboard, save)
+│  │  ├─ infra/     (store arayüzü, memoryStore, pgStore, migrate, logger, mutex, rateLimiter, runtime)
+│  │  ├─ security/  (tokens.ts: HS256 JWT)
+│  │  ├─ transport/ (http/routes.ts, ws/gateway.ts)
+│  │  └─ protocol.ts, container.ts, app.ts, main.ts
+│  └─ test/                           # 111 test (bellek: 109 + 2 yalnız PostgreSQL)
+└─ client/                            # Unity 2022.3 LTS
+   ├─ Packages/manifest.json  ProjectSettings/ProjectVersion.txt
+   ├─ Tools/                          # Unity olmadan doğrulama
+   │  ├─ LogicTests/   (net8: Core+Domain+Services+ParentControls + EditMode testleri çalışır)
+   │  ├─ CompileCheck/ (net472: Unity'ye bağlı tüm kod gerçek UnityEngine'e karşı derlenir)
+   │  └─ UguiStub/     (uGUI imza taslağı; YALNIZCA derleme denetimi için, Unity'ye girmez)
+   └─ Assets/_Project/
+      ├─ Resources/levels.json        # sunucu kataloğundan üretilir
+      ├─ Editor/ReleaseBuilder.cs     # AAB derleme betiği
+      ├─ Tests/EditMode/
+      └─ Scripts/                     # her klasör kendi asmdef'i
+         ├─ Core/          (saf: Result, Log, EventBus, ServiceLocator, AppSettings, ScreenStack…)
+         ├─ Domain/        (saf: Levels, Rounds [18 oyun türü üreticisi, labirent, eşleştirme/sıralama mantığı], Net [DTO+protokol], Rewards)
+         ├─ ParentControls/(saf: yetişkin kapısı)
+         ├─ Services/      (saf: Api, Realtime [RealtimeClient, MatchSession], Managers, Save)
+         ├─ Infra/         (Unity: UnityWebRequest, ClientWebSocket, PlayerPrefs, zamanlayıcı, ses, GameConfig)
+         ├─ UI/            (Unity: UIManager, 21 ekran, oyun görünümleri, avatar/görsel fabrikası)
+         └─ Game/          (Unity: Bootstrapper, AppController)
 ```
+\* `unity-android.yml` denenmemiş şablondur.
 
-Her `Scripts/*` klasörü kendi `asmdef` dosyasına sahip olur: derleme süresi kısalır, bağımlılık yönü derleyici tarafından zorlanır.
+Asmdef bağımlılık yönü: `Core ← Domain ← Services ← Infra/UI ← Game`. Core/Domain/Services/ParentControls `noEngineReferences` ile Unity'den bağımsızdır ve .NET'te test edilir.

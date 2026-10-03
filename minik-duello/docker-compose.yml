@@ -1,0 +1,27 @@
+# Yerel geliştirme: PostgreSQL + sunucu. Üretimde sırlar bir sır yöneticisinden gelmelidir.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: minik_duello
+    ports: ["5432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 10
+  server:
+    build: ./server
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      DATABASE_URL: postgres://postgres:postgres@db:5432/minik_duello
+      # SADECE yerel deneme için. Gerçek ortamda uzun, rastgele ve birbirinden farklı değerler kullanın.
+      JWT_SECRET: local-only-jwt-secret-change-me-0123456789abcdef
+      DEVICE_SECRET: local-only-device-secret-change-me-0123456789ab
+    ports: ["3000:3000"]
+volumes:
+  pgdata:

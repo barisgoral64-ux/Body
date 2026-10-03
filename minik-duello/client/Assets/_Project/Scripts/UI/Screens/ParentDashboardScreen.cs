@@ -221,6 +221,7 @@ namespace MinikDuello.UI
             Section("Güvenlik");
             UIFactory.CreateButton(content, "YENİ ARKADAŞ KODU", UITheme.Purple, TouchTarget, true, RegenerateCode);
             UIFactory.CreateButton(content, "PIN DEĞİŞTİR", UITheme.Purple, TouchTarget, true, () => GoTo(Step.ChangeCurrent));
+            UIFactory.CreateButton(content, "HESABI VE VERİLERİ SİL", UITheme.Pink, TouchTarget, true, ConfirmDelete);
             UIFactory.CreateSpacer(content, 20f);
             UIFactory.CreateButton(content, "KAPAT", UITheme.Neutral, TouchTarget, false, Ui.GoHome);
             UIFactory.CreateSpacer(content, 40f);
@@ -314,6 +315,25 @@ namespace MinikDuello.UI
                 Ui.Toast(result.IsOk ? "Oyuncu engellendi." : Messages.For(result.Error));
                 await ServiceLocator.Get<FriendManager>().RefreshAsync();
                 if (IsAlive) RenderDashboard();
+            }, true);
+        }
+
+        private void ConfirmDelete()
+        {
+            Ui.ShowDialog("Hesap silinsin mi?", "Tüm ilerleme, ödüller ve arkadaşlar kalıcı olarak silinir. Bu geri alınamaz.",
+                new DialogButton("EVET, SİL", UITheme.Pink, () =>
+                    Ui.ShowDialog("Emin misiniz?", "Silinen hesap geri getirilemez.",
+                        new DialogButton("KALICI OLARAK SİL", UITheme.Pink, DeleteAccount),
+                        new DialogButton("VAZGEÇ", UITheme.Neutral))),
+                new DialogButton("VAZGEÇ", UITheme.Neutral));
+        }
+
+        private void DeleteAccount()
+        {
+            RunAsync(async () =>
+            {
+                var result = await ServiceLocator.Get<ParentControlManager>().DeleteAccountAsync(Nav.ParentPin);
+                if (!result.IsOk) Ui.Toast(Messages.For(result.Error));
             }, true);
         }
 
