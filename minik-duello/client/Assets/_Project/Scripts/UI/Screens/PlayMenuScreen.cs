@@ -1,4 +1,5 @@
 using MinikDuello.Core;
+using MinikDuello.Services.Managers;
 
 namespace MinikDuello.UI
 {
@@ -6,11 +7,16 @@ namespace MinikDuello.UI
     {
         protected override void Build()
         {
-            UIFactory.CreateLabel(transform, Strings.Play, UITheme.TitleFontSize, UITheme.TextDark);
-            UIFactory.CreateButton(transform, Strings.SinglePlayer, UITheme.Primary, TouchTarget, false, () => Ui.Show(ScreenId.SinglePlayer));
-            UIFactory.CreateButton(transform, Strings.PlayWithFriend, UITheme.Blue, TouchTarget, false, () => Ui.Show(ScreenId.FriendPlay));
-            UIFactory.CreateButton(transform, Strings.PlayTogether, UITheme.Green, TouchTarget, false, () => Ui.Show(ScreenId.CoopPlay));
-            UIFactory.CreateButton(transform, Strings.Back, UITheme.Neutral, TouchTarget, true, Ui.Back);
+            BuildHeader(Strings.Play);
+            UIFactory.CreateButton(transform, Strings.SinglePlayer, UITheme.Primary, TouchTarget, false, () => Ui.Show(ScreenId.WorldSelect));
+            UIFactory.CreateButton(transform, Strings.PlayWithFriend, UITheme.Blue, TouchTarget, false, () => OpenFriendPlay(false));
+            UIFactory.CreateButton(transform, Strings.PlayTogether, UITheme.Green, TouchTarget, false, () => OpenFriendPlay(true));
+        }
+
+        private void OpenFriendPlay(bool coop)
+        {
+            Nav.CoopSelected = coop;
+            Ui.Show(ScreenId.FriendPlay);
         }
     }
 }

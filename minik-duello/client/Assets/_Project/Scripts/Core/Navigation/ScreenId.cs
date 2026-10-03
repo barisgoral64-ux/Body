@@ -4,13 +4,24 @@ namespace MinikDuello.UI
     {
         MainMenu,
         PlayMenu,
-        SinglePlayer,
-        FriendPlay,
-        CoopPlay,
+        WorldSelect,
+        LevelSelect,
+        Game,
+        Result,
         Friends,
+        AddFriend,
+        Requests,
+        Weekly,
         Character,
         Rewards,
+        Profile,
+        DailyReward,
         ParentGate,
-        ParentDashboard
+        ParentDashboard,
+        FriendPlay,
+        Lobby,
+        MatchGame,
+        MatchResult,
+        TimeUp
     }
 }

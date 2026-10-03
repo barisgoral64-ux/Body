@@ -22,9 +22,11 @@ namespace MinikDuello.Services.Api
         private readonly IHttpTransport http;
         private readonly AuthSession auth;
         private readonly IScheduler scheduler;
+        private readonly ConnectivityState connectivity;
 
-        public ApiClient(AppSettings settings, IHttpTransport http, AuthSession auth, IScheduler scheduler)
+        public ApiClient(AppSettings settings, IHttpTransport http, AuthSession auth, IScheduler scheduler, ConnectivityState connectivity = null)
         {
+            this.connectivity = connectivity;
             this.settings = settings;
             this.http = http;
             this.auth = auth;
@@ -53,6 +55,7 @@ namespace MinikDuello.Services.Api
                     TimeoutSeconds = settings.HttpTimeoutSeconds
                 });
 
+                connectivity?.Report(!response.NetworkError);
                 if (response.NetworkError)
                 {
                     if (networkFailures >= settings.HttpMaxRetries) return Result<T>.Fail(ErrorCode.Network, "Bağlantı yok");

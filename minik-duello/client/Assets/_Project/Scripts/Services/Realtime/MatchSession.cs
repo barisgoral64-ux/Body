@@ -260,6 +260,7 @@ namespace MinikDuello.Services.Realtime
             graceTimer = null;
             if (Phase != MatchPhase.Reconnecting) return;
             // Maç güvenle sonlandırılır; çocuk cezalandırılmaz (sunucu asgari ödülü verir, bağlanınca profil yenilenir).
+            LastResult = new FinishedDto { Reason = "connectionLost" };
             SetPhase(MatchPhase.Finished);
             ReconnectFailed?.Invoke();
         }

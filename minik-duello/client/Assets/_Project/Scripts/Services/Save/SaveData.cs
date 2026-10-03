@@ -43,6 +43,9 @@ namespace MinikDuello.Services.Save
         public int CachedLevel { get; set; } = 1;
         public List<string> OwnedRewards { get; set; } = new List<string>();
         public List<string> EquippedRewards { get; set; } = new List<string>();
+        /// <summary>Çevrimdışıyken de uygulanabilmesi için ebeveyn ayarlarının önbelleği (yalnızca kısıtlayıcı olanlar).</summary>
+        public int CachedDailyLimit { get; set; }
+        public bool CachedSoundEnabled { get; set; } = true;
         public string LastDailyPromptDay { get; set; }
         public bool OnboardingDone { get; set; }
     }

@@ -187,6 +187,11 @@ namespace MinikDuello.Domain.Net
         public bool? Equipped { get; set; }
     }
 
+    public sealed class FriendCodeResponseDto
+    {
+        public string FriendCode { get; set; }
+    }
+
     public sealed class BuyResultDto
     {
         public int Coins { get; set; }

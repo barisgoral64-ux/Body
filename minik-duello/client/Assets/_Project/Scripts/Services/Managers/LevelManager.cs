@@ -83,7 +83,11 @@ namespace MinikDuello.Services.Managers
             return difficulty.Adjust(catalog.Get(levelId), streak);
         }
 
-        public async Task<Result<LevelCompletion>> CompleteAsync(int levelId, int score, int durationMs)
+        /// <summary>
+        /// Sonucu yerelde HEMEN kaydeder ve kuyruğa ekler (ağ beklenmez; sonuç ekranı anında açılabilir).
+        /// Sunucuya gönderim FlushPendingAsync ile ayrıca yapılır.
+        /// </summary>
+        public Result<LevelCompletion> CompleteLocal(int levelId, int score, int durationMs)
         {
             if (!catalog.Exists(levelId)) return Result<LevelCompletion>.Fail(ErrorCode.NotFound, "Bölüm yok");
             if (!IsUnlocked(levelId)) return Result<LevelCompletion>.Fail(ErrorCode.Forbidden, "Bölüm kilitli");
@@ -106,15 +110,22 @@ namespace MinikDuello.Services.Managers
                 d.Pending.Add(new PendingResult { LevelId = levelId, Score = clamped, DurationMs = durationMs });
             });
 
-            LevelResultDto server = await FlushPendingAsync(levelId);
             return Result<LevelCompletion>.Ok(new LevelCompletion
             {
                 Stars = stars,
                 StarsGainedLocal = Math.Max(0, stars - previous),
                 NextUnlocked = stars >= 1 && level.NextLevelId.HasValue,
-                NextLevelId = stars >= 1 ? level.NextLevelId : null,
-                Server = server
+                NextLevelId = stars >= 1 ? level.NextLevelId : null
             });
+        }
+
+        /// <summary>Yerel kayıt + sunucuya gönderim denemesi (testler ve basit akışlar için).</summary>
+        public async Task<Result<LevelCompletion>> CompleteAsync(int levelId, int score, int durationMs)
+        {
+            Result<LevelCompletion> local = CompleteLocal(levelId, score, durationMs);
+            if (!local.IsOk) return local;
+            local.Value.Server = await FlushPendingAsync(levelId);
+            return local;
         }
 
         /// <summary>

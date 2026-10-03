@@ -59,6 +59,13 @@ namespace MinikDuello.Domain.Rounds
 
     public static class Prompts
     {
+        /// <summary>Ses klibi anahtarı: Resources/Voice/{anahtar}. Örn. findColor_red.</summary>
+        public static string VoiceKey(string promptKey, IDictionary<string, string> p)
+        {
+            string target = Get(p, "target");
+            return string.IsNullOrEmpty(target) ? promptKey : promptKey + "_" + target;
+        }
+
         /// <summary>Çocuğa gösterilen/okunan kısa yönerge.</summary>
         public static string Text(string promptKey, IDictionary<string, string> p)
         {

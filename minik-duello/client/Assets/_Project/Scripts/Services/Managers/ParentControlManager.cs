@@ -75,6 +75,13 @@ namespace MinikDuello.Services.Managers
         public Task<Result<Unit>> UnblockAsync(string playerId, string pin) =>
             api.PostAsync<Unit>("/v1/parent/unblock", new { pin, blockedId = playerId });
 
+        /// <summary>Yeni arkadaş kodu üretir (eski kod geçersiz olur).</summary>
+        public async Task<Result<string>> RegenerateCodeAsync(string pin)
+        {
+            Result<FriendCodeResponseDto> r = await api.PostAsync<FriendCodeResponseDto>("/v1/parent/regenerate-code", new { pin });
+            return r.IsOk ? Result<string>.Ok(r.Value.FriendCode) : Result<string>.Fail(r.Error, r.Message);
+        }
+
         public Task<Result<Unit>> RemoveFriendAsync(string friendId, string pin) =>
             api.PostAsync<Unit>("/v1/parent/friends/remove", new { pin, friendId });
     }
