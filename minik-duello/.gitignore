@@ -1,0 +1,20 @@
+# Sırlar ve imza anahtarları: ASLA commit'lenmez
+*.keystore
+*.jks
+*.p12
+.env
+.env.*
+!.env.example
+# Derleme çıktıları
+build/
+node_modules/
+dist/
+bin/
+obj/
+client/Library/
+client/Temp/
+client/Logs/
+client/UserSettings/
+client/obj/
+*.apk
+*.aab
