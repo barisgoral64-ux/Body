@@ -1,0 +1,6 @@
+{
+  "name": "MinikDuello.Game",
+  "rootNamespace": "MinikDuello.Game",
+  "references": ["MinikDuello.Core"],
+  "autoReferenced": true
+}
