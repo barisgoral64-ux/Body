@@ -1,31 +1,44 @@
 import Fastify, { type FastifyInstance } from "fastify";
 import { LIMITS, PROTOCOL_VERSION } from "./config/constants.js";
-import type { AppConfig } from "./config/env.js";
-import type { Logger } from "./infra/logger.js";
+import type { Container } from "./container.js";
+import { Gateway } from "./transport/ws/gateway.js";
+import { registerRoutes } from "./transport/http/routes.js";
 
-/** Fastify uygulaması; testte main.ts olmadan oluşturulabilir. */
-export function buildApp(config: AppConfig, logger: Logger): FastifyInstance {
-  const app = Fastify({
-    logger: false,
-    bodyLimit: LIMITS.wsMaxMessageBytes * 8,
-  });
+export interface BuiltApp {
+  readonly app: FastifyInstance;
+  readonly gateway: Gateway;
+}
+
+/** Fastify uygulaması + WebSocket geçidi; testte main.ts olmadan oluşturulabilir. */
+export function buildApp(c: Container): BuiltApp {
+  const app = Fastify({ logger: false, bodyLimit: LIMITS.wsMaxMessageBytes * 8 });
 
   app.addHook("onResponse", (request, reply, done) => {
-    logger.debug("http", { method: request.method, url: request.url, status: reply.statusCode });
+    c.logger.debug("http", { method: request.method, url: request.url, status: reply.statusCode });
     done();
   });
 
   app.setErrorHandler((error, request, reply) => {
-    logger.error("http_error", { url: request.url, message: error instanceof Error ? error.message : "unknown" });
+    c.logger.error("http_error", { url: request.url, message: error instanceof Error ? error.message : "unknown" });
     // İç ayrıntı istemciye sızdırılmaz.
-    void reply.status(500).send({ code: "INTERNAL" });
+    const status = (error as { statusCode?: number }).statusCode;
+    void reply.status(status && status >= 400 && status < 500 ? status : 500).send({ code: status && status < 500 ? "INVALID_INPUT" : "INTERNAL" });
   });
 
   app.get("/health", () => ({
     status: "ok",
-    environment: config.environment,
+    environment: c.config.environment,
     protocolVersion: PROTOCOL_VERSION,
   }));
 
-  return app;
+  registerRoutes(app, c);
+
+  const gateway = new Gateway(c);
+  app.addHook("onReady", () => {
+    gateway.attach(app.server);
+  });
+  app.addHook("onClose", () => {
+    gateway.close();
+  });
+  return { app, gateway };
 }

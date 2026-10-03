@@ -19,6 +19,7 @@ export interface PlayerProfile {
   readonly avatarFrame: string | null;
   readonly level: number;
   readonly totalStars: number;
+  readonly coins: number;
 }
 
 export type FriendRequestStatus = "pending" | "accepted" | "rejected" | "expired";

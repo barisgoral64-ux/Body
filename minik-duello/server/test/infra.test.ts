@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { buildApp } from "../src/app.js";
+import { createContainer } from "../src/container.js";
+import { MemoryStore } from "../src/infra/memoryStore.js";
 import { loadConfig } from "../src/config/env.js";
 import { createLogger, maskPlayerId } from "../src/infra/logger.js";
 
@@ -40,7 +42,8 @@ describe("logger", () => {
 
 describe("http", () => {
   it("/health çalışır", async () => {
-    const app = buildApp(loadConfig({}), createLogger("error", "t", () => undefined));
+    const logger = createLogger("error", "t", () => undefined);
+    const { app } = buildApp(createContainer(loadConfig({}), logger, { store: new MemoryStore() }));
     const res = await app.inject({ method: "GET", url: "/health" });
     expect(res.statusCode).toBe(200);
     expect(res.json()).toMatchObject({ status: "ok", protocolVersion: 1 });

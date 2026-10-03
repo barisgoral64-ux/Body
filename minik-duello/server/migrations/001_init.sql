@@ -55,6 +55,12 @@ CREATE UNIQUE INDEX friend_requests_one_pending_idx
   ON friend_requests(sender_id, receiver_id) WHERE status = 'pending';
 CREATE INDEX friend_requests_receiver_idx ON friend_requests(receiver_id, status);
 
+CREATE TABLE friend_code_attempts (
+  sender_id  UUID NOT NULL REFERENCES players(player_id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX friend_code_attempts_idx ON friend_code_attempts(sender_id, created_at);
+
 CREATE TABLE blocked_players (
   player_id  UUID NOT NULL REFERENCES players(player_id) ON DELETE CASCADE,
   blocked_id UUID NOT NULL REFERENCES players(player_id) ON DELETE CASCADE,
