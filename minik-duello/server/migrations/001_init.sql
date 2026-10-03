@@ -49,6 +49,7 @@ CREATE TABLE friend_requests (
   status      TEXT NOT NULL CHECK (status IN ('pending','accepted','rejected','expired')),
   created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
   expires_at  TIMESTAMPTZ NOT NULL,
+  resolved_at TIMESTAMPTZ,
   CHECK (sender_id <> receiver_id)
 );
 CREATE UNIQUE INDEX friend_requests_one_pending_idx
@@ -111,7 +112,7 @@ CREATE TABLE match_results (
 
 CREATE TABLE rewards (
   reward_id TEXT PRIMARY KEY,
-  type      TEXT NOT NULL CHECK (type IN ('character','costume','hat','sticker','frame','effect')),
+  type      TEXT NOT NULL CHECK (type IN ('character','costume','hat','glasses','shoes','backpack','effect','frame','sticker')),
   name_key  TEXT NOT NULL,
   rarity    TEXT NOT NULL DEFAULT 'common'
 );
@@ -150,6 +151,26 @@ CREATE TABLE player_progress (
   best_score   INT NOT NULL DEFAULT 0 CHECK (best_score >= 0),
   completed_at TIMESTAMPTZ,
   PRIMARY KEY (player_id, level_id)
+);
+
+CREATE TABLE star_events (
+  event_id   BIGSERIAL PRIMARY KEY,
+  player_id  UUID NOT NULL REFERENCES players(player_id) ON DELETE CASCADE,
+  stars      INT NOT NULL CHECK (stars > 0),
+  created_at TIMESTAMPTZ NOT NULL
+);
+CREATE INDEX star_events_idx ON star_events(player_id, created_at);
+
+CREATE TABLE daily_claims (
+  player_id      UUID PRIMARY KEY REFERENCES players(player_id) ON DELETE CASCADE,
+  claim_count    INT  NOT NULL CHECK (claim_count >= 0),
+  last_claim_day DATE NOT NULL
+);
+
+CREATE TABLE player_saves (
+  player_id  UUID PRIMARY KEY REFERENCES players(player_id) ON DELETE CASCADE,
+  data       JSONB NOT NULL,
+  updated_at TIMESTAMPTZ NOT NULL
 );
 
 COMMIT;

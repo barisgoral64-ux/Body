@@ -6,10 +6,9 @@ import { REWARDS, ROOM, ROUND_TIMING } from "../src/config/constants.js";
 import { loadConfig } from "../src/config/env.js";
 import { createContainer } from "../src/container.js";
 import { createLogger } from "../src/infra/logger.js";
-import { MemoryStore } from "../src/infra/memoryStore.js";
 import { FakeTime } from "../src/infra/runtime.js";
 import type { RoundView } from "../src/protocol.js";
-import { correctChoices, PIN, seededRandom } from "./helpers.js";
+import { correctChoices, createTestStore, PIN, seededRandom } from "./helpers.js";
 
 interface Msg {
   v: number;
@@ -68,7 +67,7 @@ async function boot() {
   const time = new FakeTime();
   const logger = createLogger("error", "e2e", () => undefined);
   const container = createContainer(loadConfig({}), logger, {
-    store: new MemoryStore(), clock: time, scheduler: time, random: seededRandom(7),
+    store: (await createTestStore()).store, clock: time, scheduler: time, random: seededRandom(7),
   });
   const { app } = buildApp(container);
   await app.listen({ port: 0, host: "127.0.0.1" });

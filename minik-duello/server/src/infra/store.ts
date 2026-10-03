@@ -82,6 +82,10 @@ export interface DataStore {
 
   /** Bakiyeyi günceller ve defter kaydı yazar; yeni bakiyeyi döndürür. */
   addCoins(id: PlayerId, delta: number, reason: string, refId: string | null): Promise<number>;
+  /** Yeterli bakiye yoksa hiçbir şey yapmadan null döner (atomik; çift harcama olmaz). */
+  spendCoins(id: PlayerId, amount: number, reason: string, refId: string | null): Promise<number | null>;
+  /** Aynı oyuncunun ödül/ilerleme yazmalarını sıraya sokar (eşzamanlı çift istek koruması). */
+  withPlayerLock<T>(id: PlayerId, fn: () => Promise<T>): Promise<T>;
   /** Yıldızı profile ekler, haftalık olay yazar; yeni toplamı döndürür. */
   addStars(id: PlayerId, stars: number, at: Date): Promise<number>;
   weeklyStars(ids: readonly PlayerId[], since: Date): Promise<ReadonlyMap<PlayerId, number>>;

@@ -1,0 +1,2104 @@
+{
+  "levels": [
+    {
+      "levelID": 1,
+      "worldID": 1,
+      "gameType": "colorMatch",
+      "difficulty": 0.05,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 3,
+      "colorCount": 2,
+      "timeLimitSeconds": 0,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 12
+      },
+      "unlocked": true,
+      "nextLevelID": 2
+    },
+    {
+      "levelID": 2,
+      "worldID": 1,
+      "gameType": "colorBox",
+      "difficulty": 0.057,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 3,
+      "colorCount": 2,
+      "timeLimitSeconds": 0,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 12
+      },
+      "unlocked": false,
+      "nextLevelID": 3
+    },
+    {
+      "levelID": 3,
+      "worldID": 1,
+      "gameType": "findColor",
+      "difficulty": 0.063,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 3,
+      "colorCount": 3,
+      "timeLimitSeconds": 0,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 12
+      },
+      "unlocked": false,
+      "nextLevelID": 4
+    },
+    {
+      "levelID": 4,
+      "worldID": 1,
+      "gameType": "missingColor",
+      "difficulty": 0.07,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 4,
+      "colorCount": 3,
+      "timeLimitSeconds": 0,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 12
+      },
+      "unlocked": false,
+      "nextLevelID": 5
+    },
+    {
+      "levelID": 5,
+      "worldID": 1,
+      "gameType": "colorMatch",
+      "difficulty": 0.076,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 4,
+      "colorCount": 3,
+      "timeLimitSeconds": 0,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 12
+      },
+      "unlocked": false,
+      "nextLevelID": 6
+    },
+    {
+      "levelID": 6,
+      "worldID": 1,
+      "gameType": "colorBox",
+      "difficulty": 0.083,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 4,
+      "colorCount": 4,
+      "timeLimitSeconds": 0,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 12
+      },
+      "unlocked": false,
+      "nextLevelID": 7
+    },
+    {
+      "levelID": 7,
+      "worldID": 1,
+      "gameType": "findColor",
+      "difficulty": 0.089,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 5,
+      "colorCount": 4,
+      "timeLimitSeconds": 0,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 12
+      },
+      "unlocked": false,
+      "nextLevelID": 8
+    },
+    {
+      "levelID": 8,
+      "worldID": 1,
+      "gameType": "missingColor",
+      "difficulty": 0.096,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 5,
+      "colorCount": 4,
+      "timeLimitSeconds": 0,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 12
+      },
+      "unlocked": false,
+      "nextLevelID": 9
+    },
+    {
+      "levelID": 9,
+      "worldID": 1,
+      "gameType": "colorMatch",
+      "difficulty": 0.103,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 5,
+      "colorCount": 5,
+      "timeLimitSeconds": 0,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 12
+      },
+      "unlocked": false,
+      "nextLevelID": 10
+    },
+    {
+      "levelID": 10,
+      "worldID": 1,
+      "gameType": "colorBox",
+      "difficulty": 0.109,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 6,
+      "colorCount": 5,
+      "timeLimitSeconds": 0,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 12
+      },
+      "unlocked": false,
+      "nextLevelID": 11
+    },
+    {
+      "levelID": 11,
+      "worldID": 2,
+      "gameType": "shapeMatch",
+      "difficulty": 0.076,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 3,
+      "colorCount": 2,
+      "timeLimitSeconds": 0,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 14
+      },
+      "unlocked": false,
+      "nextLevelID": 12
+    },
+    {
+      "levelID": 12,
+      "worldID": 2,
+      "gameType": "findShape",
+      "difficulty": 0.122,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 3,
+      "colorCount": 2,
+      "timeLimitSeconds": 0,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 14
+      },
+      "unlocked": false,
+      "nextLevelID": 13
+    },
+    {
+      "levelID": 13,
+      "worldID": 2,
+      "gameType": "shapeSort",
+      "difficulty": 0.129,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 3,
+      "colorCount": 3,
+      "timeLimitSeconds": 0,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 14
+      },
+      "unlocked": false,
+      "nextLevelID": 14
+    },
+    {
+      "levelID": 14,
+      "worldID": 2,
+      "gameType": "shapeMatch",
+      "difficulty": 0.135,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 4,
+      "colorCount": 3,
+      "timeLimitSeconds": 0,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 14
+      },
+      "unlocked": false,
+      "nextLevelID": 15
+    },
+    {
+      "levelID": 15,
+      "worldID": 2,
+      "gameType": "findShape",
+      "difficulty": 0.142,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 4,
+      "colorCount": 3,
+      "timeLimitSeconds": 0,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 14
+      },
+      "unlocked": false,
+      "nextLevelID": 16
+    },
+    {
+      "levelID": 16,
+      "worldID": 2,
+      "gameType": "shapeSort",
+      "difficulty": 0.148,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 4,
+      "colorCount": 3,
+      "timeLimitSeconds": 0,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 14
+      },
+      "unlocked": false,
+      "nextLevelID": 17
+    },
+    {
+      "levelID": 17,
+      "worldID": 2,
+      "gameType": "shapeMatch",
+      "difficulty": 0.155,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 5,
+      "colorCount": 3,
+      "timeLimitSeconds": 0,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 14
+      },
+      "unlocked": false,
+      "nextLevelID": 18
+    },
+    {
+      "levelID": 18,
+      "worldID": 2,
+      "gameType": "findShape",
+      "difficulty": 0.162,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 5,
+      "colorCount": 3,
+      "timeLimitSeconds": 0,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 14
+      },
+      "unlocked": false,
+      "nextLevelID": 19
+    },
+    {
+      "levelID": 19,
+      "worldID": 2,
+      "gameType": "shapeSort",
+      "difficulty": 0.168,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 5,
+      "colorCount": 3,
+      "timeLimitSeconds": 0,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 14
+      },
+      "unlocked": false,
+      "nextLevelID": 20
+    },
+    {
+      "levelID": 20,
+      "worldID": 2,
+      "gameType": "shapeMatch",
+      "difficulty": 0.175,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 6,
+      "colorCount": 3,
+      "timeLimitSeconds": 0,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 14
+      },
+      "unlocked": false,
+      "nextLevelID": 21
+    },
+    {
+      "levelID": 21,
+      "worldID": 3,
+      "gameType": "countSelect",
+      "difficulty": 0.141,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 3,
+      "colorCount": 3,
+      "timeLimitSeconds": 125,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 16
+      },
+      "unlocked": false,
+      "nextLevelID": 22
+    },
+    {
+      "levelID": 22,
+      "worldID": 3,
+      "gameType": "countSelect",
+      "difficulty": 0.188,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 4,
+      "colorCount": 3,
+      "timeLimitSeconds": 125,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 16
+      },
+      "unlocked": false,
+      "nextLevelID": 23
+    },
+    {
+      "levelID": 23,
+      "worldID": 3,
+      "gameType": "countSelect",
+      "difficulty": 0.194,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 5,
+      "colorCount": 3,
+      "timeLimitSeconds": 125,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 16
+      },
+      "unlocked": false,
+      "nextLevelID": 24
+    },
+    {
+      "levelID": 24,
+      "worldID": 3,
+      "gameType": "countSelect",
+      "difficulty": 0.201,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 5,
+      "colorCount": 3,
+      "timeLimitSeconds": 125,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 16
+      },
+      "unlocked": false,
+      "nextLevelID": 25
+    },
+    {
+      "levelID": 25,
+      "worldID": 3,
+      "gameType": "countSelect",
+      "difficulty": 0.208,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 6,
+      "colorCount": 3,
+      "timeLimitSeconds": 125,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 16
+      },
+      "unlocked": false,
+      "nextLevelID": 26
+    },
+    {
+      "levelID": 26,
+      "worldID": 3,
+      "gameType": "countSelect",
+      "difficulty": 0.214,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 7,
+      "colorCount": 3,
+      "timeLimitSeconds": 125,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 16
+      },
+      "unlocked": false,
+      "nextLevelID": 27
+    },
+    {
+      "levelID": 27,
+      "worldID": 3,
+      "gameType": "countSelect",
+      "difficulty": 0.221,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 8,
+      "colorCount": 3,
+      "timeLimitSeconds": 125,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 16
+      },
+      "unlocked": false,
+      "nextLevelID": 28
+    },
+    {
+      "levelID": 28,
+      "worldID": 3,
+      "gameType": "countSelect",
+      "difficulty": 0.227,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 9,
+      "colorCount": 3,
+      "timeLimitSeconds": 125,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 16
+      },
+      "unlocked": false,
+      "nextLevelID": 29
+    },
+    {
+      "levelID": 29,
+      "worldID": 3,
+      "gameType": "countSelect",
+      "difficulty": 0.234,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 10,
+      "colorCount": 3,
+      "timeLimitSeconds": 125,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 16
+      },
+      "unlocked": false,
+      "nextLevelID": 30
+    },
+    {
+      "levelID": 30,
+      "worldID": 3,
+      "gameType": "countSelect",
+      "difficulty": 0.24,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 10,
+      "colorCount": 3,
+      "timeLimitSeconds": 125,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 16
+      },
+      "unlocked": false,
+      "nextLevelID": 31
+    },
+    {
+      "levelID": 31,
+      "worldID": 4,
+      "gameType": "findAnimal",
+      "difficulty": 0.207,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 3,
+      "colorCount": 3,
+      "timeLimitSeconds": 125,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 18
+      },
+      "unlocked": false,
+      "nextLevelID": 32
+    },
+    {
+      "levelID": 32,
+      "worldID": 4,
+      "gameType": "animalSound",
+      "difficulty": 0.254,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 3,
+      "colorCount": 4,
+      "timeLimitSeconds": 125,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 18
+      },
+      "unlocked": false,
+      "nextLevelID": 33
+    },
+    {
+      "levelID": 33,
+      "worldID": 4,
+      "gameType": "animalHabitat",
+      "difficulty": 0.26,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 3,
+      "colorCount": 4,
+      "timeLimitSeconds": 125,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 18
+      },
+      "unlocked": false,
+      "nextLevelID": 34
+    },
+    {
+      "levelID": 34,
+      "worldID": 4,
+      "gameType": "animalPair",
+      "difficulty": 0.267,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 4,
+      "colorCount": 4,
+      "timeLimitSeconds": 125,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 18
+      },
+      "unlocked": false,
+      "nextLevelID": 35
+    },
+    {
+      "levelID": 35,
+      "worldID": 4,
+      "gameType": "findAnimal",
+      "difficulty": 0.273,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 4,
+      "colorCount": 4,
+      "timeLimitSeconds": 125,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 18
+      },
+      "unlocked": false,
+      "nextLevelID": 36
+    },
+    {
+      "levelID": 36,
+      "worldID": 4,
+      "gameType": "animalSound",
+      "difficulty": 0.28,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 4,
+      "colorCount": 4,
+      "timeLimitSeconds": 125,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 18
+      },
+      "unlocked": false,
+      "nextLevelID": 37
+    },
+    {
+      "levelID": 37,
+      "worldID": 4,
+      "gameType": "animalHabitat",
+      "difficulty": 0.286,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 5,
+      "colorCount": 4,
+      "timeLimitSeconds": 125,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 18
+      },
+      "unlocked": false,
+      "nextLevelID": 38
+    },
+    {
+      "levelID": 38,
+      "worldID": 4,
+      "gameType": "animalPair",
+      "difficulty": 0.293,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 5,
+      "colorCount": 4,
+      "timeLimitSeconds": 125,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 18
+      },
+      "unlocked": false,
+      "nextLevelID": 39
+    },
+    {
+      "levelID": 39,
+      "worldID": 4,
+      "gameType": "findAnimal",
+      "difficulty": 0.299,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 5,
+      "colorCount": 4,
+      "timeLimitSeconds": 125,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 18
+      },
+      "unlocked": false,
+      "nextLevelID": 40
+    },
+    {
+      "levelID": 40,
+      "worldID": 4,
+      "gameType": "animalSound",
+      "difficulty": 0.306,
+      "roundCount": 5,
+      "targetScore": 500,
+      "objectCount": 6,
+      "colorCount": 4,
+      "timeLimitSeconds": 125,
+      "starRequirements": [
+        250,
+        375,
+        500
+      ],
+      "reward": {
+        "coins": 18
+      },
+      "unlocked": false,
+      "nextLevelID": 41
+    },
+    {
+      "levelID": 41,
+      "worldID": 5,
+      "gameType": "memoryCards",
+      "difficulty": 0.273,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 4,
+      "colorCount": 4,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 20
+      },
+      "unlocked": false,
+      "nextLevelID": 42
+    },
+    {
+      "levelID": 42,
+      "worldID": 5,
+      "gameType": "memoryCards",
+      "difficulty": 0.319,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 4,
+      "colorCount": 4,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 20
+      },
+      "unlocked": false,
+      "nextLevelID": 43
+    },
+    {
+      "levelID": 43,
+      "worldID": 5,
+      "gameType": "memoryCards",
+      "difficulty": 0.326,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 6,
+      "colorCount": 4,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 20
+      },
+      "unlocked": false,
+      "nextLevelID": 44
+    },
+    {
+      "levelID": 44,
+      "worldID": 5,
+      "gameType": "memoryCards",
+      "difficulty": 0.332,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 6,
+      "colorCount": 4,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 20
+      },
+      "unlocked": false,
+      "nextLevelID": 45
+    },
+    {
+      "levelID": 45,
+      "worldID": 5,
+      "gameType": "memoryCards",
+      "difficulty": 0.339,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 6,
+      "colorCount": 4,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 20
+      },
+      "unlocked": false,
+      "nextLevelID": 46
+    },
+    {
+      "levelID": 46,
+      "worldID": 5,
+      "gameType": "memoryCards",
+      "difficulty": 0.345,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 8,
+      "colorCount": 4,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 20
+      },
+      "unlocked": false,
+      "nextLevelID": 47
+    },
+    {
+      "levelID": 47,
+      "worldID": 5,
+      "gameType": "memoryCards",
+      "difficulty": 0.352,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 8,
+      "colorCount": 4,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 20
+      },
+      "unlocked": false,
+      "nextLevelID": 48
+    },
+    {
+      "levelID": 48,
+      "worldID": 5,
+      "gameType": "memoryCards",
+      "difficulty": 0.359,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 10,
+      "colorCount": 4,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 20
+      },
+      "unlocked": false,
+      "nextLevelID": 49
+    },
+    {
+      "levelID": 49,
+      "worldID": 5,
+      "gameType": "memoryCards",
+      "difficulty": 0.365,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 10,
+      "colorCount": 4,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 20
+      },
+      "unlocked": false,
+      "nextLevelID": 50
+    },
+    {
+      "levelID": 50,
+      "worldID": 5,
+      "gameType": "memoryCards",
+      "difficulty": 0.372,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 12,
+      "colorCount": 4,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 20
+      },
+      "unlocked": false,
+      "nextLevelID": 51
+    },
+    {
+      "levelID": 51,
+      "worldID": 6,
+      "gameType": "maze",
+      "difficulty": 0.338,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 4,
+      "colorCount": 4,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 22
+      },
+      "unlocked": false,
+      "nextLevelID": 52
+    },
+    {
+      "levelID": 52,
+      "worldID": 6,
+      "gameType": "maze",
+      "difficulty": 0.385,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 4,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 22
+      },
+      "unlocked": false,
+      "nextLevelID": 53
+    },
+    {
+      "levelID": 53,
+      "worldID": 6,
+      "gameType": "maze",
+      "difficulty": 0.391,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 4,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 22
+      },
+      "unlocked": false,
+      "nextLevelID": 54
+    },
+    {
+      "levelID": 54,
+      "worldID": 6,
+      "gameType": "maze",
+      "difficulty": 0.398,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 5,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 22
+      },
+      "unlocked": false,
+      "nextLevelID": 55
+    },
+    {
+      "levelID": 55,
+      "worldID": 6,
+      "gameType": "maze",
+      "difficulty": 0.405,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 5,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 22
+      },
+      "unlocked": false,
+      "nextLevelID": 56
+    },
+    {
+      "levelID": 56,
+      "worldID": 6,
+      "gameType": "maze",
+      "difficulty": 0.411,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 5,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 22
+      },
+      "unlocked": false,
+      "nextLevelID": 57
+    },
+    {
+      "levelID": 57,
+      "worldID": 6,
+      "gameType": "maze",
+      "difficulty": 0.418,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 6,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 22
+      },
+      "unlocked": false,
+      "nextLevelID": 58
+    },
+    {
+      "levelID": 58,
+      "worldID": 6,
+      "gameType": "maze",
+      "difficulty": 0.424,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 6,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 22
+      },
+      "unlocked": false,
+      "nextLevelID": 59
+    },
+    {
+      "levelID": 59,
+      "worldID": 6,
+      "gameType": "maze",
+      "difficulty": 0.431,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 6,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 22
+      },
+      "unlocked": false,
+      "nextLevelID": 60
+    },
+    {
+      "levelID": 60,
+      "worldID": 6,
+      "gameType": "maze",
+      "difficulty": 0.437,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 7,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 22
+      },
+      "unlocked": false,
+      "nextLevelID": 61
+    },
+    {
+      "levelID": 61,
+      "worldID": 7,
+      "gameType": "quickFind",
+      "difficulty": 0.404,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 3,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 24
+      },
+      "unlocked": false,
+      "nextLevelID": 62
+    },
+    {
+      "levelID": 62,
+      "worldID": 7,
+      "gameType": "quickFind",
+      "difficulty": 0.451,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 3,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 24
+      },
+      "unlocked": false,
+      "nextLevelID": 63
+    },
+    {
+      "levelID": 63,
+      "worldID": 7,
+      "gameType": "quickFind",
+      "difficulty": 0.457,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 3,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 24
+      },
+      "unlocked": false,
+      "nextLevelID": 64
+    },
+    {
+      "levelID": 64,
+      "worldID": 7,
+      "gameType": "quickFind",
+      "difficulty": 0.464,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 4,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 24
+      },
+      "unlocked": false,
+      "nextLevelID": 65
+    },
+    {
+      "levelID": 65,
+      "worldID": 7,
+      "gameType": "quickFind",
+      "difficulty": 0.47,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 4,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 24
+      },
+      "unlocked": false,
+      "nextLevelID": 66
+    },
+    {
+      "levelID": 66,
+      "worldID": 7,
+      "gameType": "quickFind",
+      "difficulty": 0.477,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 4,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 24
+      },
+      "unlocked": false,
+      "nextLevelID": 67
+    },
+    {
+      "levelID": 67,
+      "worldID": 7,
+      "gameType": "quickFind",
+      "difficulty": 0.483,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 5,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 24
+      },
+      "unlocked": false,
+      "nextLevelID": 68
+    },
+    {
+      "levelID": 68,
+      "worldID": 7,
+      "gameType": "quickFind",
+      "difficulty": 0.49,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 5,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 24
+      },
+      "unlocked": false,
+      "nextLevelID": 69
+    },
+    {
+      "levelID": 69,
+      "worldID": 7,
+      "gameType": "quickFind",
+      "difficulty": 0.496,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 5,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 24
+      },
+      "unlocked": false,
+      "nextLevelID": 70
+    },
+    {
+      "levelID": 70,
+      "worldID": 7,
+      "gameType": "quickFind",
+      "difficulty": 0.503,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 6,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 24
+      },
+      "unlocked": false,
+      "nextLevelID": 71
+    },
+    {
+      "levelID": 71,
+      "worldID": 8,
+      "gameType": "pattern",
+      "difficulty": 0.47,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 3,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 26
+      },
+      "unlocked": false,
+      "nextLevelID": 72
+    },
+    {
+      "levelID": 72,
+      "worldID": 8,
+      "gameType": "pattern",
+      "difficulty": 0.516,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 3,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 26
+      },
+      "unlocked": false,
+      "nextLevelID": 73
+    },
+    {
+      "levelID": 73,
+      "worldID": 8,
+      "gameType": "pattern",
+      "difficulty": 0.523,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 3,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 26
+      },
+      "unlocked": false,
+      "nextLevelID": 74
+    },
+    {
+      "levelID": 74,
+      "worldID": 8,
+      "gameType": "pattern",
+      "difficulty": 0.529,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 4,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 26
+      },
+      "unlocked": false,
+      "nextLevelID": 75
+    },
+    {
+      "levelID": 75,
+      "worldID": 8,
+      "gameType": "pattern",
+      "difficulty": 0.536,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 4,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 26
+      },
+      "unlocked": false,
+      "nextLevelID": 76
+    },
+    {
+      "levelID": 76,
+      "worldID": 8,
+      "gameType": "pattern",
+      "difficulty": 0.542,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 4,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 26
+      },
+      "unlocked": false,
+      "nextLevelID": 77
+    },
+    {
+      "levelID": 77,
+      "worldID": 8,
+      "gameType": "pattern",
+      "difficulty": 0.549,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 5,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 26
+      },
+      "unlocked": false,
+      "nextLevelID": 78
+    },
+    {
+      "levelID": 78,
+      "worldID": 8,
+      "gameType": "pattern",
+      "difficulty": 0.556,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 5,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 26
+      },
+      "unlocked": false,
+      "nextLevelID": 79
+    },
+    {
+      "levelID": 79,
+      "worldID": 8,
+      "gameType": "pattern",
+      "difficulty": 0.562,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 5,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 26
+      },
+      "unlocked": false,
+      "nextLevelID": 80
+    },
+    {
+      "levelID": 80,
+      "worldID": 8,
+      "gameType": "pattern",
+      "difficulty": 0.569,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 6,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 26
+      },
+      "unlocked": false,
+      "nextLevelID": 81
+    },
+    {
+      "levelID": 81,
+      "worldID": 9,
+      "gameType": "puzzle",
+      "difficulty": 0.535,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 2,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 28
+      },
+      "unlocked": false,
+      "nextLevelID": 82
+    },
+    {
+      "levelID": 82,
+      "worldID": 9,
+      "gameType": "puzzle",
+      "difficulty": 0.582,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 2,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 28
+      },
+      "unlocked": false,
+      "nextLevelID": 83
+    },
+    {
+      "levelID": 83,
+      "worldID": 9,
+      "gameType": "puzzle",
+      "difficulty": 0.588,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 3,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 28
+      },
+      "unlocked": false,
+      "nextLevelID": 84
+    },
+    {
+      "levelID": 84,
+      "worldID": 9,
+      "gameType": "puzzle",
+      "difficulty": 0.595,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 3,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 28
+      },
+      "unlocked": false,
+      "nextLevelID": 85
+    },
+    {
+      "levelID": 85,
+      "worldID": 9,
+      "gameType": "puzzle",
+      "difficulty": 0.602,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 4,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 28
+      },
+      "unlocked": false,
+      "nextLevelID": 86
+    },
+    {
+      "levelID": 86,
+      "worldID": 9,
+      "gameType": "puzzle",
+      "difficulty": 0.608,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 4,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 28
+      },
+      "unlocked": false,
+      "nextLevelID": 87
+    },
+    {
+      "levelID": 87,
+      "worldID": 9,
+      "gameType": "puzzle",
+      "difficulty": 0.615,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 4,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 28
+      },
+      "unlocked": false,
+      "nextLevelID": 88
+    },
+    {
+      "levelID": 88,
+      "worldID": 9,
+      "gameType": "puzzle",
+      "difficulty": 0.621,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 5,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 28
+      },
+      "unlocked": false,
+      "nextLevelID": 89
+    },
+    {
+      "levelID": 89,
+      "worldID": 9,
+      "gameType": "puzzle",
+      "difficulty": 0.628,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 5,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 28
+      },
+      "unlocked": false,
+      "nextLevelID": 90
+    },
+    {
+      "levelID": 90,
+      "worldID": 9,
+      "gameType": "puzzle",
+      "difficulty": 0.634,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 6,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 28
+      },
+      "unlocked": false,
+      "nextLevelID": 91
+    },
+    {
+      "levelID": 91,
+      "worldID": 10,
+      "gameType": "explorerMix",
+      "difficulty": 0.601,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 3,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 30
+      },
+      "unlocked": false,
+      "nextLevelID": 92
+    },
+    {
+      "levelID": 92,
+      "worldID": 10,
+      "gameType": "explorerMix",
+      "difficulty": 0.647,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 3,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 30
+      },
+      "unlocked": false,
+      "nextLevelID": 93
+    },
+    {
+      "levelID": 93,
+      "worldID": 10,
+      "gameType": "explorerMix",
+      "difficulty": 0.654,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 3,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 30
+      },
+      "unlocked": false,
+      "nextLevelID": 94
+    },
+    {
+      "levelID": 94,
+      "worldID": 10,
+      "gameType": "explorerMix",
+      "difficulty": 0.661,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 4,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 30
+      },
+      "unlocked": false,
+      "nextLevelID": 95
+    },
+    {
+      "levelID": 95,
+      "worldID": 10,
+      "gameType": "explorerMix",
+      "difficulty": 0.667,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 4,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 30
+      },
+      "unlocked": false,
+      "nextLevelID": 96
+    },
+    {
+      "levelID": 96,
+      "worldID": 10,
+      "gameType": "explorerMix",
+      "difficulty": 0.674,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 4,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 30
+      },
+      "unlocked": false,
+      "nextLevelID": 97
+    },
+    {
+      "levelID": 97,
+      "worldID": 10,
+      "gameType": "explorerMix",
+      "difficulty": 0.68,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 5,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 30
+      },
+      "unlocked": false,
+      "nextLevelID": 98
+    },
+    {
+      "levelID": 98,
+      "worldID": 10,
+      "gameType": "explorerMix",
+      "difficulty": 0.687,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 5,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 30
+      },
+      "unlocked": false,
+      "nextLevelID": 99
+    },
+    {
+      "levelID": 99,
+      "worldID": 10,
+      "gameType": "explorerMix",
+      "difficulty": 0.693,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 5,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 30
+      },
+      "unlocked": false,
+      "nextLevelID": 100
+    },
+    {
+      "levelID": 100,
+      "worldID": 10,
+      "gameType": "explorerMix",
+      "difficulty": 0.7,
+      "roundCount": 6,
+      "targetScore": 600,
+      "objectCount": 6,
+      "colorCount": 5,
+      "timeLimitSeconds": 150,
+      "starRequirements": [
+        300,
+        450,
+        600
+      ],
+      "reward": {
+        "coins": 30
+      },
+      "unlocked": false,
+      "nextLevelID": null
+    }
+  ]
+}

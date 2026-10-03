@@ -9,7 +9,7 @@ const envSchema = z.object({
   HOST: z.string().default("0.0.0.0"),
   LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).optional(),
   JWT_SECRET: z.string().optional(),
-  DATABASE_URL: z.string().default("postgres://postgres:postgres@localhost:5432/minik_duello"),
+  DATABASE_URL: z.string().optional(),
   REDIS_URL: z.string().default("redis://localhost:6379"),
 });
 
@@ -22,7 +22,7 @@ export interface AppConfig {
   readonly host: string;
   readonly logLevel: "debug" | "info" | "warn" | "error";
   readonly jwtSecret: string;
-  readonly databaseUrl: string;
+  readonly databaseUrl: string | null;
   readonly redisUrl: string;
 }
 
@@ -42,6 +42,7 @@ export function loadConfig(source: Record<string, string | undefined> = process.
   if (isProduction && (env.JWT_SECRET ?? "").length < MIN_SECRET_LENGTH) {
     throw new Error(`Üretimde JWT_SECRET en az ${MIN_SECRET_LENGTH} karakter olmalıdır.`);
   }
+  if (isProduction && !env.DATABASE_URL) throw new Error("Üretimde DATABASE_URL zorunludur.");
 
   return Object.freeze({
     environment: env.NODE_ENV,
@@ -50,7 +51,7 @@ export function loadConfig(source: Record<string, string | undefined> = process.
     host: env.HOST,
     logLevel: env.LOG_LEVEL ?? (isProduction ? "info" : "debug"),
     jwtSecret: env.JWT_SECRET && env.JWT_SECRET.length > 0 ? env.JWT_SECRET : DEV_FALLBACK_SECRET,
-    databaseUrl: env.DATABASE_URL,
+    databaseUrl: env.DATABASE_URL && env.DATABASE_URL.length > 0 ? env.DATABASE_URL : null,
     redisUrl: env.REDIS_URL,
   });
 }

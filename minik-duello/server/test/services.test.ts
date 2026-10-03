@@ -8,18 +8,18 @@ const DAY = 24 * 60 * 60 * 1000;
 
 describe("token ve kimlik", () => {
   it("aynı cihaz aynı hesaba döner, token doğrulanır", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const a = await env.c.auth.registerAnonymous("same-device-id-0123456789");
     const b = await env.c.auth.registerAnonymous("same-device-id-0123456789");
     expect(a.ok && b.ok && a.value.player.playerId === b.value.player.playerId).toBe(true);
     expect(a.ok && env.c.auth.verifyAccessToken(a.value.tokens.accessToken).ok).toBe(true);
   });
   it("kısa cihaz kimliği reddedilir", async () => {
-    const r = await createEnv().c.auth.registerAnonymous("kisa");
+    const r = await (await createEnv()).c.auth.registerAnonymous("kisa");
     expect(r.ok).toBe(false);
   });
   it("refresh token access olarak kullanılamaz, bozuk imza reddedilir, süre dolar", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const r = await env.c.auth.registerAnonymous("device-for-token-tests-01");
     if (!r.ok) throw new Error("x");
     expect(env.c.auth.verifyAccessToken(r.value.tokens.refreshToken).ok).toBe(false);
@@ -30,15 +30,15 @@ describe("token ve kimlik", () => {
     expect(env.c.auth.verifyAccessToken(r.value.tokens.accessToken).ok).toBe(false);
     expect((await env.c.auth.refresh(r.value.tokens.refreshToken)).ok).toBe(true);
   });
-  it("alg=none ile üretilmiş token reddedilir", () => {
-    const env = createEnv();
+  it("alg=none ile üretilmiş token reddedilir", async () => {
+    const env = await createEnv();
     const svc = new TokenService("secret-secret-secret-secret-secret", env.time);
     const header = Buffer.from(JSON.stringify({ alg: "none", typ: "JWT" })).toString("base64url");
     const claims = Buffer.from(JSON.stringify({ sub: "x", typ: "access", iat: 0, exp: 9999999999 })).toString("base64url");
     expect(svc.verify(`${header}.${claims}.`, "access").ok).toBe(false);
   });
   it("yeni hesap güvenli varsayılanlarla ve başlangıç karakteriyle açılır", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const p = await newPlayer(env);
     const s = await env.c.parent.getSettings(p.id);
     expect(s.ok && [s.value.friendsEnabled, s.value.multiplayerEnabled, s.value.hasPin]).toEqual([false, false, false]);
@@ -49,13 +49,13 @@ describe("token ve kimlik", () => {
 
 describe("ebeveyn kontrolleri", () => {
   it("PIN yokken sosyal özellik açılamaz", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const p = await newPlayer(env);
     const r = await env.c.parent.updateSettings(p.id, { friendsEnabled: true });
     expect(r.ok === false && r.error.code).toBe(ErrorCode.Forbidden);
   });
   it("yanlış PIN ayarı değiştiremez, 5 yanlışta kilitlenir, süre sonra açılır", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const p = await newPlayer(env);
     await env.c.parent.setPin(p.id, PIN);
     for (let i = 0; i < PARENT.maxPinAttempts; i += 1) {
@@ -68,7 +68,7 @@ describe("ebeveyn kontrolleri", () => {
     expect(ok.ok).toBe(true);
   });
   it("PIN değişikliği mevcut PIN ister; geçersiz format reddedilir", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const p = await newPlayer(env);
     expect((await env.c.parent.setPin(p.id, "12")).ok).toBe(false);
     await env.c.parent.setPin(p.id, PIN);
@@ -76,7 +76,7 @@ describe("ebeveyn kontrolleri", () => {
     expect((await env.c.parent.setPin(p.id, "9999", PIN)).ok).toBe(true);
   });
   it("geçersiz süre sınırı reddedilir", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const p = await newPlayer(env);
     expect((await env.c.parent.updateSettings(p.id, { dailyLimitMinutes: -5 })).ok).toBe(false);
     expect((await env.c.parent.updateSettings(p.id, { dailyLimitMinutes: 45 })).ok).toBe(true);
@@ -85,7 +85,7 @@ describe("ebeveyn kontrolleri", () => {
 
 describe("arkadaşlık", () => {
   it("karşılıklı arkadaşlık: istek → kabul → iki taraf da listede", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const a = await newPlayer(env);
     const b = await newPlayer(env);
     await makeFriends(env, a, b);
@@ -95,7 +95,7 @@ describe("arkadaşlık", () => {
     expect(lb.ok && lb.value.map((f) => f.playerId)).toEqual([a.id]);
   });
   it("istek tek taraflı arkadaşlık yaratmaz", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const a = await newPlayer(env);
     const b = await newPlayer(env);
     await enableSocial(env, a.id);
@@ -104,14 +104,14 @@ describe("arkadaşlık", () => {
     expect(await env.c.friends.areFriends(a.id, b.id)).toBe(false);
   });
   it("ebeveyn izni kapalıyken istek gönderilemez", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const a = await newPlayer(env);
     const b = await newPlayer(env);
     const r = await env.c.friendRequests.send(a.id, b.code);
     expect(r.ok === false && r.error.code).toBe(ErrorCode.FriendsDisabled);
   });
   it("alıcı tarafı nötr: kod yok / alıcı kapalı / engelli aynı başarılı yanıt, istek oluşmaz", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const a = await newPlayer(env);
     const closed = await newPlayer(env); // sosyal kapalı
     await enableSocial(env, a.id);
@@ -122,14 +122,14 @@ describe("arkadaşlık", () => {
     expect(await env.store.listPendingIncoming(closed.id, env.time.now())).toHaveLength(0);
   });
   it("geçersiz kod ve kendi kodu reddedilir", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const a = await newPlayer(env);
     await enableSocial(env, a.id);
     expect((await env.c.friendRequests.send(a.id, "x' OR 1=1")).ok).toBe(false);
     expect((await env.c.friendRequests.send(a.id, a.code)).ok).toBe(false);
   });
   it("başkası başkasının isteğini kabul edemez", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const [a, b, c] = [await newPlayer(env), await newPlayer(env), await newPlayer(env)];
     await enableSocial(env, a.id);
     await enableSocial(env, b.id);
@@ -142,7 +142,7 @@ describe("arkadaşlık", () => {
     expect(await env.c.friends.areFriends(a.id, c.id)).toBe(false);
   });
   it("süresi dolan istek kabul edilemez", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const a = await newPlayer(env);
     const b = await newPlayer(env);
     await enableSocial(env, a.id);
@@ -155,7 +155,7 @@ describe("arkadaşlık", () => {
     expect(r.ok === false && r.error.code).toBe(ErrorCode.RequestExpired);
   });
   it("reddedilen isteğe 24 saat içinde tekrar istek oluşmaz; sonra olur", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const a = await newPlayer(env);
     const b = await newPlayer(env);
     await enableSocial(env, a.id);
@@ -170,7 +170,7 @@ describe("arkadaşlık", () => {
     expect(await env.store.listPendingIncoming(b.id, env.time.now())).toHaveLength(1);
   });
   it("kod tahmini (numaralandırma) günlük deneme sınırıyla durdurulur; gün sonra yenilenir", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const a = await newPlayer(env);
     await enableSocial(env, a.id);
     let last = await env.c.friendRequests.send(a.id, "PANDA-2222"); // var olmayan kod da sayılır
@@ -180,7 +180,7 @@ describe("arkadaşlık", () => {
     expect((await env.c.friendRequests.send(a.id, "PANDA-2222")).ok).toBe(true);
   });
   it("gerçek isteklerin günlük sınırı", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const a = await newPlayer(env);
     await enableSocial(env, a.id);
     let last: Awaited<ReturnType<typeof env.c.friendRequests.send>> = { ok: true, value: undefined };
@@ -192,7 +192,7 @@ describe("arkadaşlık", () => {
     expect(last.ok === false && last.error.code).toBe(ErrorCode.RateLimited);
   });
   it("engelleme arkadaşlığı ve bekleyen istekleri kaldırır; engelli yeni istek gönderemez", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const a = await newPlayer(env);
     const b = await newPlayer(env);
     await makeFriends(env, a, b);
@@ -204,7 +204,7 @@ describe("arkadaşlık", () => {
     expect(await env.c.parent.isBlocked(b.id, a.id)).toBe(true);
   });
   it("ebeveyn PIN ile arkadaş kaldırır", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const a = await newPlayer(env);
     const b = await newPlayer(env);
     await makeFriends(env, a, b);
@@ -216,7 +216,7 @@ describe("arkadaşlık", () => {
 
 describe("presence gizliliği", () => {
   it("izleyici yalnızca arkadaş + izin açıkken gerçek durumu görür", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const a = await newPlayer(env);
     const b = await newPlayer(env);
     const stranger = await newPlayer(env);
@@ -228,7 +228,7 @@ describe("presence gizliliği", () => {
     expect(await env.c.presence.visibleTo(a.id, b.id)).toBe("offline");
   });
   it("heartbeat kesilince offline olur", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const a = await newPlayer(env);
     env.c.presence.set(a.id, "online");
     env.time.advance(60_000);
@@ -239,7 +239,7 @@ describe("presence gizliliği", () => {
 describe("ödüller ve bölüm sonucu", () => {
   const goodDuration = 20_000;
   it("günlük ödül günde bir kez; kaçırılan gün seriyi bozmaz", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const p = await newPlayer(env);
     const d1 = await env.c.rewards.claimDaily(p.id);
     expect(d1.ok && d1.value.coins).toBe(DAILY_REWARD_CYCLE[0]?.coins);
@@ -250,7 +250,7 @@ describe("ödüller ve bölüm sonucu", () => {
     expect(d2.ok && d2.value.rewardId).toBe("sticker_star");
   });
   it("bölüm sonucu: yıldız/coin sunucuda hesaplanır, tekrar oynama coin çiftçiliği yapmaz", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const p = await newPlayer(env);
     const level = env.c.levels.getCatalog()[0];
     if (!level) throw new Error("x");
@@ -264,7 +264,7 @@ describe("ödüller ve bölüm sonucu", () => {
     expect(me.ok && me.value.totalStars).toBe(3);
   });
   it("kilitli bölüm, hileli skor ve insan altı süre reddedilir", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const p = await newPlayer(env);
     expect((await env.c.levels.submitResult(p.id, 2, 100, goodDuration)).ok).toBe(false);
     expect((await env.c.levels.submitResult(p.id, 1, 99999, goodDuration)).ok).toBe(false);
@@ -273,7 +273,7 @@ describe("ödüller ve bölüm sonucu", () => {
     expect((await env.c.levels.submitResult(p.id, 999, 100, goodDuration)).ok).toBe(false);
   });
   it("0 yıldızlı sonuç sonraki bölümü açmaz; 1+ yıldız açar", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const p = await newPlayer(env);
     await env.c.levels.submitResult(p.id, 1, 0, goodDuration);
     expect((await env.c.levels.getProgress(p.id)).levels[1]?.unlocked).toBe(false);
@@ -282,7 +282,7 @@ describe("ödüller ve bölüm sonucu", () => {
     expect((await env.c.levels.submitResult(p.id, 2, 100, goodDuration)).ok).toBe(true);
   });
   it("yıldız eşiği kozmetik açar ve seviye yükselir", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const p = await newPlayer(env);
     const g = await env.c.rewards.grant(p.id, 10, 0, "test", null);
     expect(g.newRewards).toEqual(expect.arrayContaining(["hat_party", "char_rabbit"]));
@@ -290,7 +290,7 @@ describe("ödüller ve bölüm sonucu", () => {
     expect(me.ok && me.value.level).toBe(1 + Math.floor(10 / REWARDS.starsPerPlayerLevel));
   });
   it("mağaza: yeterli coin gerekir, çift satın alma yok, takma slot dışlayıcı", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const p = await newPlayer(env);
     expect((await env.c.rewards.buy(p.id, "hat_crown")).ok).toBe(false);
     await env.c.rewards.grant(p.id, 0, 500, "test", null);
@@ -307,7 +307,7 @@ describe("ödüller ve bölüm sonucu", () => {
     expect((await env.c.rewards.equip(p.id, "outfit_hero", true)).ok).toBe(false); // sahip değil
   });
   it("haftalık skor yalnızca arkadaşlar arası ve sahibini içerir", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const a = await newPlayer(env);
     const b = await newPlayer(env);
     const stranger = await newPlayer(env);
@@ -319,7 +319,7 @@ describe("ödüller ve bölüm sonucu", () => {
     expect(lb.ok && lb.value.map((e) => [e.playerId, e.stars])).toEqual([[b.id, 7], [a.id, 4]]);
   });
   it("bulut kaydı boyut sınırı", async () => {
-    const env = createEnv();
+    const env = await createEnv();
     const p = await newPlayer(env);
     expect((await env.c.saves.save(p.id, { music: 0.5 })).ok).toBe(true);
     expect((await env.c.saves.save(p.id, { blob: "x".repeat(70_000) })).ok).toBe(false);

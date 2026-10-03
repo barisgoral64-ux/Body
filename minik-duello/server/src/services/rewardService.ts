@@ -58,7 +58,11 @@ export class RewardService {
   }
 
   /** Günlük ödül: günde bir kez. Kaçırılan gün serisi bozmaz; takvim kaldığı yerden devam eder. */
-  async claimDaily(playerId: PlayerId): Promise<Result<{ coins: number; rewardId: string | null; dayIndex: number }>> {
+  claimDaily(playerId: PlayerId): Promise<Result<{ coins: number; rewardId: string | null; dayIndex: number }>> {
+    return this.store.withPlayerLock(playerId, () => this.claimDailyLocked(playerId));
+  }
+
+  private async claimDailyLocked(playerId: PlayerId): Promise<Result<{ coins: number; rewardId: string | null; dayIndex: number }>> {
     const status = await this.getDailyStatus(playerId);
     if (!status.canClaim) return fail(ErrorCode.InvalidState, "Bugünün ödülü alındı");
 
@@ -78,7 +82,11 @@ export class RewardService {
   }
 
   /** Coin ile satın alma yalnızca oyun içi kazanılmış coin kullanır. */
-  async buy(playerId: PlayerId, rewardId: string): Promise<Result<{ coins: number }>> {
+  buy(playerId: PlayerId, rewardId: string): Promise<Result<{ coins: number }>> {
+    return this.store.withPlayerLock(playerId, () => this.buyLocked(playerId, rewardId));
+  }
+
+  private async buyLocked(playerId: PlayerId, rewardId: string): Promise<Result<{ coins: number }>> {
     const def = rewardById(rewardId);
     if (!def || def.shopPrice === null) return fail(ErrorCode.NotFound, "Mağazada yok");
     const profile = await this.store.getProfile(playerId);
@@ -86,7 +94,8 @@ export class RewardService {
     if (profile.coins < def.shopPrice) return fail(ErrorCode.InvalidState, "Yeterli coin yok");
     const owned = (await this.store.listInventory(playerId)).some((i) => i.rewardId === rewardId);
     if (owned) return fail(ErrorCode.InvalidState, "Zaten sahipsin");
-    const coins = await this.store.addCoins(playerId, -def.shopPrice, "shop", rewardId);
+    const coins = await this.store.spendCoins(playerId, def.shopPrice, "shop", rewardId);
+    if (coins === null) return fail(ErrorCode.InvalidState, "Yeterli coin yok");
     await this.store.grantInventory(playerId, rewardId, this.clock.now());
     return ok({ coins });
   }

@@ -1,9 +1,15 @@
 import { loadConfig } from "../src/config/env.js";
 import { createContainer, type Container } from "../src/container.js";
 import type { RandomInt } from "../src/domain/identity.js";
+import { randomBytes } from "node:crypto";
+import { Pool } from "pg";
+import { afterEach } from "vitest";
 import { createLogger } from "../src/infra/logger.js";
 import { MemoryStore } from "../src/infra/memoryStore.js";
+import { runMigrations, seedStaticData } from "../src/infra/migrate.js";
+import { PgStore } from "../src/infra/pgStore.js";
 import { FakeTime } from "../src/infra/runtime.js";
+import type { DataStore } from "../src/infra/store.js";
 import type { RoundView, ServerMessage } from "../src/protocol.js";
 
 export const PIN = "1234";
@@ -19,22 +25,59 @@ export function seededRandom(seed: number): RandomInt {
   };
 }
 
+/** TEST_DATABASE_URL verilirse testler gerçek PostgreSQL'de (test başına ayrı şema) koşar. */
+const PG_URL = process.env.TEST_DATABASE_URL;
+const cleanups: (() => Promise<void>)[] = [];
+afterEach(async () => {
+  for (const fn of cleanups.splice(0)) await fn();
+});
+
+export interface TestStore {
+  readonly store: DataStore;
+  readonly matchCount: () => Promise<number>;
+}
+
+export async function createTestStore(): Promise<TestStore> {
+  if (!PG_URL) {
+    const memory = new MemoryStore();
+    return { store: memory, matchCount: () => Promise.resolve(memory.savedMatches().length) };
+  }
+  const schema = `t_${randomBytes(6).toString("hex")}`;
+  const admin = new Pool({ connectionString: PG_URL, max: 1 });
+  await admin.query(`CREATE SCHEMA ${schema}`);
+  const pool = new Pool({ connectionString: PG_URL, options: `-c search_path=${schema}`, max: 6 });
+  await runMigrations(pool);
+  await seedStaticData(pool);
+  const lockPool = new Pool({ connectionString: PG_URL, max: 4 });
+  cleanups.push(async () => {
+    await pool.end();
+    await lockPool.end();
+    await admin.query(`DROP SCHEMA ${schema} CASCADE`);
+    await admin.end();
+  });
+  return {
+    store: new PgStore(pool, lockPool),
+    matchCount: async () => Number((await pool.query("SELECT COUNT(*) AS n FROM matches")).rows[0].n),
+  };
+}
+
 export interface TestEnv {
   readonly time: FakeTime;
-  readonly store: MemoryStore;
+  readonly store: DataStore;
+  readonly matchCount: () => Promise<number>;
   readonly c: Container;
   /** Sunucudan oyunculara giden tüm mesajlar. */
   readonly sent: { to: string; message: ServerMessage }[];
 }
 
-export function createEnv(seed = 1): TestEnv {
+export async function createEnv(seed = 1): Promise<TestEnv> {
   const time = new FakeTime();
-  const store = new MemoryStore();
+  const { store, matchCount } = await createTestStore();
   const logger = createLogger("error", "test", () => undefined);
   const c = createContainer(loadConfig({}), logger, { store, clock: time, scheduler: time, random: seededRandom(seed) });
   const sent: { to: string; message: ServerMessage }[] = [];
   c.bindSink({ deliver: (to, message) => void sent.push({ to, message }), onRoomClosed: () => undefined });
-  return { time, store, c, sent };
+  return { time, store, matchCount, c, sent };
 }
 
 let deviceCounter = 0;

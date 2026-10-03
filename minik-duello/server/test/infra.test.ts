@@ -10,7 +10,7 @@ describe("config", () => {
     expect(() => loadConfig({ NODE_ENV: "production", JWT_SECRET: "kisa" })).toThrow();
   });
   it("üretimde güçlü secret ile açılır ve log seviyesi info olur", () => {
-    const c = loadConfig({ NODE_ENV: "production", JWT_SECRET: "x".repeat(40) });
+    const c = loadConfig({ NODE_ENV: "production", JWT_SECRET: "x".repeat(40), DATABASE_URL: "postgres://x/y" });
     expect(c.isProduction).toBe(true);
     expect(c.logLevel).toBe("info");
   });
@@ -18,6 +18,9 @@ describe("config", () => {
     const c = loadConfig({});
     expect(c.environment).toBe("development");
     expect(c.logLevel).toBe("debug");
+  });
+  it("üretimde DATABASE_URL zorunlu", () => {
+    expect(() => loadConfig({ NODE_ENV: "production", JWT_SECRET: "x".repeat(40) })).toThrow(/DATABASE_URL/);
   });
   it("geçersiz PORT reddedilir", () => {
     expect(() => loadConfig({ PORT: "abc" })).toThrow();

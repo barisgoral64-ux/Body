@@ -12,7 +12,7 @@ export function currentRound(env: TestEnv, playerId: string): RoundView {
 }
 
 async function setup(mode: Parameters<TestEnv["c"]["rooms"]["createRoom"]>[2], seed = 1) {
-  const env = createEnv(seed);
+  const env = await createEnv(seed);
   const a = await newPlayer(env);
   const b = await newPlayer(env);
   const created = env.c.rooms.createRoom(a.id, b.id, mode);
@@ -64,7 +64,7 @@ describe("rekabetçi maç", () => {
 
     const meA = await env.c.players.getSelf(a.id);
     expect(meA.ok && meA.value.totalStars).toBe(REWARDS.matchWinnerStars);
-    expect(env.store.savedMatches()).toHaveLength(1);
+    expect(await env.matchCount()).toBe(1);
     expect(env.c.rooms.roomOf(a.id)).toBeNull(); // oda temizlendi
   });
 

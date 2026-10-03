@@ -45,7 +45,12 @@ export class LevelService {
    * İstemci yalnızca ham skoru ve süreyi bildirir; yıldız, coin ve kilit açma sunucuda karar verilir.
    * Makul olmayan skor/süre (örn. insan altı hız) reddedilir.
    */
-  async submitResult(playerId: PlayerId, levelId: number, score: number, durationMs: number): Promise<Result<LevelResultView>> {
+  submitResult(playerId: PlayerId, levelId: number, score: number, durationMs: number): Promise<Result<LevelResultView>> {
+    // Aynı oyuncunun eşzamanlı çift gönderimi ödülü ikiye katlayamaz.
+    return this.store.withPlayerLock(playerId, () => this.submitLocked(playerId, levelId, score, durationMs));
+  }
+
+  private async submitLocked(playerId: PlayerId, levelId: number, score: number, durationMs: number): Promise<Result<LevelResultView>> {
     const level = this.catalog.find((l) => l.levelID === levelId);
     if (!level) return fail(ErrorCode.NotFound, "Bölüm yok");
     if (!Number.isInteger(score) || score < 0 || score > level.targetScore) return fail(ErrorCode.InvalidInput, "Skor geçersiz");

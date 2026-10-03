@@ -2,6 +2,7 @@ import type {
   FriendRequest, FriendRequestStatus, GameInvite, InviteStatus, MatchResult, Player, PlayerId, PlayerProfile,
 } from "../domain/models.js";
 import { orderFriendPair } from "../domain/friendRequest.js";
+import { KeyedMutex } from "./mutex.js";
 import type {
   DailyClaimState, DataStore, LevelProgress, MatchRecord, ProfilePatch, StoredParentSettings,
 } from "./store.js";
@@ -31,6 +32,7 @@ export class MemoryStore implements DataStore {
   private readonly inventory = new Map<PlayerId, Map<string, boolean>>();
   private readonly progress = new Map<string, LevelProgress>();
   private readonly daily = new Map<PlayerId, DailyClaimState>();
+  private readonly locks = new KeyedMutex();
   private readonly saves = new Map<PlayerId, { data: unknown; updatedAt: Date }>();
 
   createPlayer(player: Player, deviceHash: string, profile: PlayerProfile, settings: StoredParentSettings): Promise<void> {
@@ -232,6 +234,17 @@ export class MemoryStore implements DataStore {
     this.profiles.set(id, { ...p, coins });
     this.coinLedger.push({ id, delta, reason, refId });
     return Promise.resolve(coins);
+  }
+  spendCoins(id: PlayerId, amount: number, reason: string, refId: string | null): Promise<number | null> {
+    const p = this.profiles.get(id);
+    if (!p || amount < 0 || p.coins < amount) return Promise.resolve(null);
+    const coins = p.coins - amount;
+    this.profiles.set(id, { ...p, coins });
+    this.coinLedger.push({ id, delta: -amount, reason, refId });
+    return Promise.resolve(coins);
+  }
+  withPlayerLock<T>(id: PlayerId, fn: () => Promise<T>): Promise<T> {
+    return this.locks.run(id, fn);
   }
   addStars(id: PlayerId, stars: number, at: Date): Promise<number> {
     const p = this.profiles.get(id);
