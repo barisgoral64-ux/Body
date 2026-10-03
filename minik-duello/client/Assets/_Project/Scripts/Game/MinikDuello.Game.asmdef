@@ -1,6 +1,6 @@
 {
   "name": "MinikDuello.Game",
   "rootNamespace": "MinikDuello.Game",
-  "references": ["MinikDuello.Core"],
+  "references": ["MinikDuello.Core", "MinikDuello.UI", "MinikDuello.ParentControls"],
   "autoReferenced": true
 }
